@@ -5,7 +5,7 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.example.sensoresAlhambra"
-        minSdkVersion 15
+        minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -35,5 +35,5 @@ dependencies {
     implementation 'com.google.android.gms:play-services-vision:15.0.0'
     //implementation 'com.google.android.gms:play-services:12.0.1'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
-
+    implementation 'com.google.vr:sdk-panowidget:1.80.0'
 }
