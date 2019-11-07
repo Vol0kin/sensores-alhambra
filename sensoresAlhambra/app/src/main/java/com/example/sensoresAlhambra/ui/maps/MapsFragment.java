@@ -2,6 +2,7 @@ package com.example.sensoresAlhambra.ui.maps;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.BitmapFactory;
 import android.hardware.Sensor;
@@ -22,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.sensoresAlhambra.InfoActivity;
 import com.example.sensoresAlhambra.R;
 import com.google.vr.sdk.widgets.pano.VrPanoramaEventListener;
 import com.google.vr.sdk.widgets.pano.VrPanoramaView;
@@ -137,14 +139,15 @@ public class MapsFragment extends Fragment implements SensorEventListener{
 
             long curTime = System.currentTimeMillis();
 
-            if ((curTime - lastUpdate) > 100) {
+            if ((curTime - lastUpdate) > 200) {
                 long diffTime = (curTime - lastUpdate);
                 lastUpdate = curTime;
 
                 float speed = Math.abs(y - last_y )/ diffTime * 10000;
 
                 if (speed > SHAKE_THRESHOLD && buttonPanoView.getVisibility() == View.VISIBLE) {
-                    Toast.makeText(getContext(), "qwertyuiop", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getContext(), InfoActivity.class);
+                    startActivity(intent);
                 }
 
                 last_x = x;
