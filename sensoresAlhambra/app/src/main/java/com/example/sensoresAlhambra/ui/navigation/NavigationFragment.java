@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -35,6 +36,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -113,10 +116,46 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         nMap = googleMap;
-        nMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        //Set style
+        try {
+            boolean success = nMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.map_style));
+            if (!success) {
+                Log.e("MapsActivityRaw", "Style parsing failed.");
+            }
+        } catch (Resources.NotFoundException e) {
+            Log.e("MapsActivityRaw", "Can't find style.", e);
+        }
         UiSettings uiSettings = nMap.getUiSettings();
         uiSettings.setZoomControlsEnabled(true);
 
+
+
+
+
+        //Limits for maps
+        LatLng one = new LatLng(37.1783, -3.5924);
+        LatLng two = new LatLng(37.1738, -3.5847);
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        //add them to builder
+        builder.include(one);
+        builder.include(two);
+
+        LatLngBounds bounds = builder.build();
+        //get width and height to current display screen
+        int width = getResources().getDisplayMetrics().widthPixels;
+        int height = getResources().getDisplayMetrics().heightPixels;
+
+        // 20% padding
+        int padding = (int) (width * 0.20);
+
+        //set latlong bounds
+        nMap.setLatLngBoundsForCameraTarget(bounds);
+
+        //move camera to fill the bound to screen
+        nMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding));
+
+        //set zoom to level to current so that you won't be able to zoom out viz. move outside bounds
+        nMap.setMinZoomPreference(nMap.getCameraPosition().zoom);
 
         //Location lastLocation = LocationServices.FusedLolastLocationcationApi.getLastLocation(googleApiClient);
 
@@ -156,7 +195,7 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
         //System.out.println(lastLocation.getLatitude());
         nMap.addMarker(new MarkerOptions().position(sydney).title("Estoy mamadisimo hdtpm").icon(BitmapDescriptorFactory.defaultMarker(HUE_VIOLET)));
         float zoomlevel = 16;
-        nMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, zoomlevel));
+        //nMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, zoomlevel));
 
     }
 
@@ -181,14 +220,14 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
             if(marker != null)
                 marker.remove();
             Log.i(TAG, "Lat " + location.getLatitude() + " Long " + location.getLongitude());
-            double longitude = -6.05;//location.getLongitude();
-            double latitude = 6.5;//ocation.getLatitude();
+            double longitude = location.getLongitude();
+            double latitude = location.getLatitude();
 
             //Add a marker in Syndey
             LatLng sydney = new LatLng(latitude, longitude);
             //LatLng sydney = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
             //System.out.println(lastLocation.getLatitude());
-            marker = nMap.addMarker(new MarkerOptions().position(sydney).title("Soy kraken").icon(BitmapDescriptorFactory.defaultMarker(HUE_VIOLET)));
+            //marker = nMap.addMarker(new MarkerOptions().position(sydney).title("Soy kraken").icon(BitmapDescriptorFactory.defaultMarker(HUE_VIOLET)));
             float zoomlevel = 16;
             nMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, zoomlevel));
         }
