@@ -7,10 +7,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-<<<<<<< HEAD
-=======
+
 import android.graphics.Color;
->>>>>>> 47463f38be11abb1bb52105f4fa344fa5b86920b
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
