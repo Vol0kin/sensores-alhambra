@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Vibrator;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.sensoresAlhambra.InfoActivity;
 import com.example.sensoresAlhambra.R;
+import com.example.sensoresAlhambra.ui.navigation.NavigationFragment;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -74,7 +76,7 @@ public class CameraFragment extends Fragment {
         barcodeDetector = new BarcodeDetector.Builder(getContext())
                 .setBarcodeFormats(Barcode.QR_CODE).build();
         cameraSource= new CameraSource.Builder(getContext(), barcodeDetector)
-                .setRequestedPreviewSize(640,480).build();
+                .setRequestedPreviewSize(640,480).setAutoFocusEnabled(true).build();
 
 
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
@@ -112,20 +114,39 @@ public class CameraFragment extends Fragment {
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> qrCodes = detections.getDetectedItems();
 
-                if(qrCodes.size() >= 1){
+
+                if(qrCodes.size() >= 1) {
                     textView.post(new Runnable() {
                         @Override
                         public void run() {
-                            Vibrator vibrator  = (Vibrator) getActivity().getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+                            Vibrator vibrator = (Vibrator) getActivity().getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
                             vibrator.vibrate(50);
+                            textView.setText(qrCodes.valueAt(qrCodes.size() - 1).displayValue);
+                            cameraSource.stop(); // ADD THIS. THIS WILL STOP CAMERA
+                            //barcodeDetector.release();
 
-                            Intent myIntent = new Intent(getContext(), InfoActivity.class);
-                            startActivity(myIntent);
-                            textView.setText(qrCodes.valueAt(qrCodes.size()-1).displayValue);
-                            qrCodes.clear();
-                            
+                            Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        cameraSource.start();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                            }, 1000);
+
+
                         }
+                        //Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(qrCodes.valueAt(qrCodes.size()-1).displayValue));
+                        //startActivity(myIntent);
+                        //qrCodes.clear();
+
                     });
+
+
                 }
 
             }
