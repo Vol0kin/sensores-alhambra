@@ -153,10 +153,64 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
         polygon.setTag("arriba españa");
         polygon.setClickable(true);
 
+        PolygonOptions recOption2 = new PolygonOptions()
+                .add(new LatLng(37.1763, -3.5910),
+                        new LatLng(37.1765, -3.5911),
+                        new LatLng(37.1767, -3.5914),
+                        new LatLng(37.1767, -3.5921),
+                        new LatLng(37.1767, -3.5921),
+                        new LatLng(37.1767, -3.5923),
+                        new LatLng(37.1768, -3.5923),
+                        new LatLng(37.1768, -3.5928),
+                        new LatLng(37.1768, -3.5930),
+                        new LatLng(37.1769, -3.5929),
+                        new LatLng(37.1769, -3.5931),
+                        new LatLng(37.1770, -3.5931),
+                        new LatLng(37.1771, -3.5930),
+                        new LatLng(37.1771, -3.5929),
+                        new LatLng(37.1772, -3.5925),
+                        new LatLng(37.1772, -3.5925),
+                        new LatLng(37.1772, -3.5924),
+                        new LatLng(37.1773, -3.5924),
+                        new LatLng(37.1773, -3.5921),
+                        new LatLng(37.1774, -3.5921),
+                        new LatLng(37.1774, -3.5920),
+                        new LatLng(37.1773, -3.5920),
+                        new LatLng(37.1773, -3.5919),
+                        new LatLng(37.1775, -3.5913),
+                        new LatLng(37.1775, -3.5914),
+                        new LatLng(37.1775, -3.5912),
+                        new LatLng(37.1775, -3.5911),
+                        new LatLng(37.1768, -3.5912),
+                        new LatLng(37.1766, -3.5909),
+                        new LatLng(37.1764, -3.5909),
+                        new LatLng(37.1763, -3.5909))
+                .strokeColor(Color.RED).fillColor(0x85DFAD24)
+                .strokeWidth(5)
+                .geodesic(true);
+
+
+
+        Polygon polygon2 = nMap.addPolygon(recOption2);
+        polygon2.setTag("arriba portugal");
+        polygon2.setClickable(true);
+
         nMap.setOnPolygonClickListener(new GoogleMap.OnPolygonClickListener() {
             @Override
             public void onPolygonClick(Polygon polygon) {
-                Toast.makeText(getContext(), "Fernando coméme los huevos", Toast.LENGTH_SHORT).show();
+                String cases = (String)polygon.getTag();
+                switch((String)polygon.getTag()){
+                    case "arriba portugal":
+                        Toast.makeText(getContext(), "Fernando coméme los huevos", Toast.LENGTH_SHORT).show();
+                        break;
+                    case "arriba españa":
+                        Toast.makeText(getContext(), "Jose coméme los huevos", Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        Toast.makeText(getContext(), "Vladis coméme los huevos", Toast.LENGTH_SHORT).show();
+                        break;
+
+                }
             }
         });
 
