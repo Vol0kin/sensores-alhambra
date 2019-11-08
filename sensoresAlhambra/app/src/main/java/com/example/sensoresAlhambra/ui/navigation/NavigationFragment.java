@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,6 +42,10 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import static android.content.ContentValues.TAG;
 import static com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_VIOLET;
@@ -129,8 +135,29 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
         uiSettings.setZoomControlsEnabled(true);
 
 
+        PolygonOptions recOption = new PolygonOptions()
+                .add(new LatLng(37.1775, -3.5911),
+                        new LatLng(37.1774, -3.5901),
+                        new LatLng(37.1772, -3.5901),
+                        new LatLng(37.1772, -3.5907),
+                        new LatLng(37.1767, -3.5908),
+                        new LatLng(37.1768, -3.5911))
+                .strokeColor(Color.RED).fillColor(0x8585DAFD)
+                .strokeWidth(5)
+                .geodesic(true);
 
 
+
+        Polygon polygon = nMap.addPolygon(recOption);
+        polygon.setTag("arriba españa");
+        polygon.setClickable(true);
+
+        nMap.setOnPolygonClickListener(new GoogleMap.OnPolygonClickListener() {
+            @Override
+            public void onPolygonClick(Polygon polygon) {
+                Toast.makeText(getContext(), "Fernando coméme los huevos", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         //Limits for maps
         LatLng one = new LatLng(37.1783, -3.5924);
@@ -155,7 +182,7 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
         nMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding));
 
         //set zoom to level to current so that you won't be able to zoom out viz. move outside bounds
-        nMap.setMinZoomPreference(nMap.getCameraPosition().zoom);
+        nMap.setMinZoomPreference(nMap.getCameraPosition().zoom+2);
 
         //Location lastLocation = LocationServices.FusedLolastLocationcationApi.getLastLocation(googleApiClient);
 
@@ -193,7 +220,7 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
         LatLng sydney = new LatLng(latitude, longitude);
         //LatLng sydney = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
         //System.out.println(lastLocation.getLatitude());
-        nMap.addMarker(new MarkerOptions().position(sydney).title("Estoy mamadisimo hdtpm").icon(BitmapDescriptorFactory.defaultMarker(HUE_VIOLET)));
+        //nMap.addMarker(new MarkerOptions().position(sydney).title("Estoy mamadisimo hdtpm").icon(BitmapDescriptorFactory.defaultMarker(HUE_VIOLET)));
         float zoomlevel = 16;
         //nMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, zoomlevel));
 
@@ -227,9 +254,9 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
             LatLng sydney = new LatLng(latitude, longitude);
             //LatLng sydney = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
             //System.out.println(lastLocation.getLatitude());
-            //marker = nMap.addMarker(new MarkerOptions().position(sydney).title("Soy kraken").icon(BitmapDescriptorFactory.defaultMarker(HUE_VIOLET)));
-            float zoomlevel = 16;
-            nMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, zoomlevel));
+            marker = nMap.addMarker(new MarkerOptions().position(sydney).title("Soy kraken").icon(BitmapDescriptorFactory.defaultMarker(HUE_VIOLET)));
+            float zoomlevel = nMap.getCameraPosition().zoom;
+            //nMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, zoomlevel));
         }
 
         public void onProviderDisabled(String provider) {
