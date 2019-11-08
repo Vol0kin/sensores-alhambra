@@ -35,31 +35,31 @@ public class InfoActivity extends AppCompatActivity implements SensorEventListen
         senAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_NORMAL);
 
-        if (MapsFragment.imagen == "image2.jpg"){
-            imageView = (ImageView) findViewById(R.id.imagenInfo);
+        if (MapsFragment.imagen.equals("image2.jpg")){
+            imageView = (ImageView) findViewById(R.id.tituloPlano);
             try {
                 imageView.setImageDrawable(Drawable.createFromStream( getAssets().open("fuente.jpg"),null) );
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            tituloInfo = (TextView) findViewById(R.id.tituloInfo);
+            tituloInfo = (TextView) findViewById(R.id.imagenPlano);
             tituloInfo.setText("Fuente de mierda");
-            textInfo = (TextView) findViewById(R.id.textoInfo);
+            textInfo = (TextView) findViewById(R.id.plantaPlano);
             String information = "Me rompés las pelotas fernando";
             textInfo.setText(information);
         }
-        else if (MapsFragment.imagen == "image3.jpg"){
-            imageView = (ImageView) findViewById(R.id.imagenInfo);
+        else if (MapsFragment.imagen.equals("image3.jpg")){
+            imageView = (ImageView) findViewById(R.id.tituloPlano);
             try {
                 imageView.setImageDrawable(Drawable.createFromStream( getAssets().open("palacio.jpg"),null) );
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            tituloInfo = (TextView) findViewById(R.id.tituloInfo);
+            tituloInfo = (TextView) findViewById(R.id.imagenPlano);
             tituloInfo.setText("Palacio de Carlos V");
-            textInfo = (TextView) findViewById(R.id.textoInfo);
+            textInfo = (TextView) findViewById(R.id.plantaPlano);
             String information = "El palacio de Carlos V es una construcción renacentista situada en la colina de la Alhambra de la ciudad española de Granada, en Andalucía. Desde 1958, es sede del Museo de Bellas Artes de Granada y, desde 1994, también es sede del Museo de la Alhambra.";
             textInfo.setText(information);
         }

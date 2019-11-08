@@ -4,6 +4,9 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,6 +18,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -22,6 +26,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.sensoresAlhambra.BlueprintsActivity;
 import com.example.sensoresAlhambra.InfoActivity;
 import com.example.sensoresAlhambra.R;
 import com.example.sensoresAlhambra.ui.navigation.NavigationFragment;
@@ -39,6 +44,7 @@ public class CameraFragment extends Fragment {
     BarcodeDetector barcodeDetector;
     TextView textView;
     private CameraViewModel cameraViewModel;
+    public static String lecturaQr;
 
     private static final int CAMERA_PERMISSION_CAMERA = 0x000000;
 
@@ -51,7 +57,6 @@ public class CameraFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_camera, container, false);
 
         surfaceView = (SurfaceView) root.findViewById(R.id.camerapreview);
-        textView = (TextView) root.findViewById(R.id.textCamera);
 
 
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -65,11 +70,24 @@ public class CameraFragment extends Fragment {
 
         activateCameraReader();
 
-
-
-
-
         return root;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        cameraSource.stop();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        activateCameraReader();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     public void activateCameraReader(){
@@ -119,24 +137,29 @@ public class CameraFragment extends Fragment {
                     textView.post(new Runnable() {
                         @Override
                         public void run() {
-                            Vibrator vibrator = (Vibrator) getActivity().getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-                            vibrator.vibrate(50);
-                            textView.setText(qrCodes.valueAt(qrCodes.size() - 1).displayValue);
-                            cameraSource.stop(); // ADD THIS. THIS WILL STOP CAMERA
-                            //barcodeDetector.release();
+                        Vibrator vibrator = (Vibrator) getActivity().getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+                        vibrator.vibrate(50);
+                        cameraSource.stop(); // ADD THIS. THIS WILL STOP CAMERA
+                        //barcodeDetector.release();
 
-                            Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        cameraSource.start();
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
+                        lecturaQr = qrCodes.valueAt(qrCodes.size() - 1).displayValue;
+                        Toast.makeText(getContext(), lecturaQr, Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getContext(), BlueprintsActivity.class);
+                        startActivity(intent);
+                        qrCodes.clear();
 
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    cameraSource.start();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
                                 }
-                            }, 1000);
+
+                            }
+                        }, 1000);
 
 
                         }
