@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.sensoresAlhambra.InfoActivity;
 import com.example.sensoresAlhambra.R;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
@@ -111,20 +112,22 @@ public class CameraFragment extends Fragment {
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> qrCodes = detections.getDetectedItems();
 
-                if(qrCodes.size() > 1){
+                if(qrCodes.size() >= 1){
                     textView.post(new Runnable() {
                         @Override
                         public void run() {
                             Vibrator vibrator  = (Vibrator) getActivity().getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
                             vibrator.vibrate(50);
 
-                            Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(qrCodes.valueAt(qrCodes.size()-1).displayValue));
+                            Intent myIntent = new Intent(getContext(), InfoActivity.class);
                             startActivity(myIntent);
                             textView.setText(qrCodes.valueAt(qrCodes.size()-1).displayValue);
                             qrCodes.clear();
+                            
                         }
                     });
                 }
+
             }
         });
     }

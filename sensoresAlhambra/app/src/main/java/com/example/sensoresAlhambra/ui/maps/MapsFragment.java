@@ -32,6 +32,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 
 public class MapsFragment extends Fragment implements SensorEventListener{
+    public static String imagen = "image.jpg";
 
     private MapsViewModel  mapsViewModel;
     private VrPanoramaView mVRPanoramaView;
@@ -139,13 +140,13 @@ public class MapsFragment extends Fragment implements SensorEventListener{
 
             long curTime = System.currentTimeMillis();
 
-            if ((curTime - lastUpdate) > 200) {
+            if ((curTime - lastUpdate) > 250) {
                 long diffTime = (curTime - lastUpdate);
                 lastUpdate = curTime;
 
                 float speed = Math.abs(y - last_y )/ diffTime * 10000;
 
-                if (speed > SHAKE_THRESHOLD && buttonPanoView.getVisibility() == View.VISIBLE) {
+                if (speed > SHAKE_THRESHOLD && !imagen.equals("image.jpg")) {
                     Intent intent = new Intent(getContext(), InfoActivity.class);
                     startActivity(intent);
                 }
@@ -162,11 +163,23 @@ public class MapsFragment extends Fragment implements SensorEventListener{
     }
 
     private void updateReticule() {
-        if(mHeadRotation[1] > -20 && mHeadRotation[1] < 20 && mHeadRotation[0] > -20 && mHeadRotation[0] < 20){
-            buttonPanoView.setVisibility(View.VISIBLE);
+        if(mHeadRotation[1] > -60 && mHeadRotation[1] < -20 && mHeadRotation[0] > -20 && mHeadRotation[0] < 20){
+            if (!imagen.equals("image2.jpg")) {
+                imagen = "image2.jpg";
+                loadPhotoSphere("image2.jpg");
+            }
+        }
+        else if(mHeadRotation[1] > 0 && mHeadRotation[1] < 30 && mHeadRotation[0] > -20 && mHeadRotation[0] < 20){
+            if (!imagen.equals("image3.jpg")) {
+                imagen = "image3.jpg";
+                loadPhotoSphere("image3.jpg");
+            }
         }
         else{
-            buttonPanoView.setVisibility(View.INVISIBLE);
+            if (!imagen.equals("image.jpg")) {
+                imagen = "image.jpg";
+                loadPhotoSphere("image.jpg");
+            }
         }
     }
 

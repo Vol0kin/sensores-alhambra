@@ -1,20 +1,25 @@
 package com.example.sensoresAlhambra;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.sensoresAlhambra.ui.maps.MapsFragment;
+
+import java.io.IOException;
+
 public class InfoActivity extends AppCompatActivity implements SensorEventListener {
 
-    TextView textInfo;
+    TextView textInfo, tituloInfo;
+    ImageView imageView;
     private SensorManager sensorManager;
     private Sensor senAccelerometer;
 
@@ -30,11 +35,36 @@ public class InfoActivity extends AppCompatActivity implements SensorEventListen
         senAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_NORMAL);
 
-        textInfo = (TextView) findViewById(R.id.textInfo);
+        if (MapsFragment.imagen == "image2.jpg"){
+            imageView = (ImageView) findViewById(R.id.imagenInfo);
+            try {
+                imageView.setImageDrawable(Drawable.createFromStream( getAssets().open("fuente.jpg"),null) );
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-        String information = "Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado. Dale una puntuacion de 5 estrellas o un gatito sera asesinado.";
+            tituloInfo = (TextView) findViewById(R.id.tituloInfo);
+            tituloInfo.setText("Fuente de mierda");
+            textInfo = (TextView) findViewById(R.id.textoInfo);
+            String information = "Me rompés las pelotas fernando";
+            textInfo.setText(information);
+        }
+        else if (MapsFragment.imagen == "image3.jpg"){
+            imageView = (ImageView) findViewById(R.id.imagenInfo);
+            try {
+                imageView.setImageDrawable(Drawable.createFromStream( getAssets().open("palacio.jpg"),null) );
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-        textInfo.setText(information);
+            tituloInfo = (TextView) findViewById(R.id.tituloInfo);
+            tituloInfo.setText("Palacio de Carlos V");
+            textInfo = (TextView) findViewById(R.id.textoInfo);
+            String information = "El palacio de Carlos V es una construcción renacentista situada en la colina de la Alhambra de la ciudad española de Granada, en Andalucía. Desde 1958, es sede del Museo de Bellas Artes de Granada y, desde 1994, también es sede del Museo de la Alhambra.";
+            textInfo.setText(information);
+        }
+
+
 
     }
 
@@ -49,7 +79,7 @@ public class InfoActivity extends AppCompatActivity implements SensorEventListen
 
             long curTime = System.currentTimeMillis();
 
-            if ((curTime - lastUpdate) > 300) {
+            if ((curTime - lastUpdate) > 200) {
                 long diffTime = (curTime - lastUpdate);
                 lastUpdate = curTime;
 
@@ -57,7 +87,6 @@ public class InfoActivity extends AppCompatActivity implements SensorEventListen
 
                 if (speed > SHAKE_THRESHOLD) {
                     onBackPressed();
-                    Toast.makeText(getApplicationContext(), "jibgufdgifbdi", Toast.LENGTH_SHORT).show();
                 }
 
                 last_x = x;
