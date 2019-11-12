@@ -16,15 +16,22 @@ public class BlueprintsActivity extends AppCompatActivity {
     ImageView imagenPlano;
 
     private void showImageTextInfo(String fileName, String title, String information) {
+
+        // Obtener ImageView del plano
         imagenPlano = (ImageView) findViewById(R.id.imagenPlano);
+
+        // Intentar establecer imagen
         try {
             imagenPlano.setImageDrawable(Drawable.createFromStream( getAssets().open(fileName),null) );
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        // Establecer titulo
         tituloPlano = (TextView) findViewById(R.id.tituloPlano);
         tituloPlano.setText(title);
+
+        // Establecer informacion
         plantaPlano = (TextView) findViewById(R.id.plantaPlano);
         plantaPlano.setText(information);
     }
@@ -42,7 +49,6 @@ public class BlueprintsActivity extends AppCompatActivity {
                 fileName = "fuente.jpg";
                 title = "Fuente";
                 information = "Planta baja";
-                this.showImageTextInfo("fuente.jpg", "Fuente", "Planta baja");
                 break;
             case("palacio"):
                 fileName = "palacio.jpg";
@@ -75,9 +81,10 @@ public class BlueprintsActivity extends AppCompatActivity {
                 information = "Salón de Embajadores";
                 break;
             default:
-                fileName = "";
-                title = "";
-                information = "";
+                fileName = "sad_android.png";
+                title = "Código QR no soportado";
+                information = "Lo sentimos, no estás en la Alhambra";
+                break;
         }
 
         // Mostrar la informacion
