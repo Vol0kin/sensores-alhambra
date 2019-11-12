@@ -141,7 +141,7 @@ public class CameraFragment extends Fragment {
 
 
                 if(qrCodes.size() >= 1) {
-                    textView.post(new Runnable() {
+                    surfaceView.post(new Runnable() {
                         @Override
                         public void run() {
                         Vibrator vibrator = (Vibrator) getActivity().getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
@@ -154,21 +154,6 @@ public class CameraFragment extends Fragment {
                         Intent intent = new Intent(getContext(), BlueprintsActivity.class);
                         startActivity(intent);
                         qrCodes.clear();
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    cameraSource.start();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-
-                            }
-                        }, 1000);
-
-
                         }
                         //Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(qrCodes.valueAt(qrCodes.size()-1).displayValue));
                         //startActivity(myIntent);

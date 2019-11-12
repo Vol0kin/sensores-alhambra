@@ -15,38 +15,72 @@ public class BlueprintsActivity extends AppCompatActivity {
     TextView tituloPlano, plantaPlano;
     ImageView imagenPlano;
 
+    private void showImageTextInfo(String fileName, String title, String information) {
+        imagenPlano = (ImageView) findViewById(R.id.imagenPlano);
+        try {
+            imagenPlano.setImageDrawable(Drawable.createFromStream( getAssets().open(fileName),null) );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        tituloPlano = (TextView) findViewById(R.id.tituloPlano);
+        tituloPlano.setText(title);
+        plantaPlano = (TextView) findViewById(R.id.plantaPlano);
+        plantaPlano.setText(information);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blueprints);
 
-        if (CameraFragment.lecturaQr.equals("fuente")){
-            imagenPlano = (ImageView) findViewById(R.id.imagenPlano);
-            try {
-                imagenPlano.setImageDrawable(Drawable.createFromStream( getAssets().open("fuente.jpg"),null) );
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        // Variables que contendran informacion sobre la imagen a mostrar
+        String fileName, title, information;
 
-            tituloPlano = (TextView) findViewById(R.id.tituloPlano);
-            tituloPlano.setText("fuente");
-            plantaPlano = (TextView) findViewById(R.id.plantaPlano);
-            String information = "Planta baja";
-            plantaPlano.setText(information);
+        switch(CameraFragment.lecturaQr) {
+            case("fuente"):
+                fileName = "fuente.jpg";
+                title = "Fuente";
+                information = "Planta baja";
+                this.showImageTextInfo("fuente.jpg", "Fuente", "Planta baja");
+                break;
+            case("palacio"):
+                fileName = "palacio.jpg";
+                title = "Palacio de Carlos V";
+                information = "Planta 2";
+                break;
+            case("nazaries"):
+                fileName = "palacios-nazaries-base.jpg";
+                title = "Mapa de los Palacios Nazaríes";
+                information = "Plano de los palacios";
+                break;
+            case("mezquita"):
+                fileName = "palacios-nazaries-1.png";
+                title = "Posición actual";
+                information = "Mezquita";
+                break;
+            case("hermanas"):
+                fileName = "palacios-nazaries-2.png";
+                title = "Posición actual";
+                information = "Sala de las Dos Hermanas";
+                break;
+            case("reyes"):
+                fileName = "palacios-nazaries-3.png";
+                title = "Posición actual";
+                information = "Sala de los Reyes";
+                break;
+            case("embajadores"):
+                fileName = "palacios-nazaries-4.png";
+                title = "Posición actual";
+                information = "Salón de Embajadores";
+                break;
+            default:
+                fileName = "";
+                title = "";
+                information = "";
         }
-        else if (CameraFragment.lecturaQr.equals("palacio")){
-            imagenPlano = (ImageView) findViewById(R.id.imagenPlano);
-            try {
-                imagenPlano.setImageDrawable(Drawable.createFromStream( getAssets().open("palacio.jpg"),null) );
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
-            tituloPlano = (TextView) findViewById(R.id.tituloPlano);
-            tituloPlano.setText("Palacio de Carlos V");
-            plantaPlano = (TextView) findViewById(R.id.plantaPlano);
-            String information = "Planta 2";
-            plantaPlano.setText(information);
-        }
+        // Mostrar la informacion
+        this.showImageTextInfo(fileName, title, information);
     }
 }
