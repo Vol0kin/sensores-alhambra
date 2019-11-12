@@ -47,6 +47,7 @@ public class CameraFragment extends Fragment {
     public static String lecturaQr;
 
     private static final int CAMERA_PERMISSION_CAMERA = 0x000000;
+    private static final int LOCATION_PERMISSION_LOCATION = 0x000001;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -61,14 +62,20 @@ public class CameraFragment extends Fragment {
 
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CAMERA)) {
-                activateCameraReader();
+                //activateCameraReader();
             } else {
-                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA},
+                requestPermissions(new String[]{Manifest.permission.CAMERA},
                         CAMERA_PERMISSION_CAMERA);
             }
         }
-
-        activateCameraReader();
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+                //activateCameraReader();
+            } else {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        LOCATION_PERMISSION_LOCATION);
+            }
+        }
 
         return root;
     }
@@ -178,11 +185,16 @@ public class CameraFragment extends Fragment {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+
         if (requestCode == CAMERA_PERMISSION_CAMERA) {
 
-            if (!Arrays.asList(grantResults).contains(PackageManager.PERMISSION_DENIED)) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 //all permissions have been granted
-                activateCameraReader(); //call your dependent logic
+                System.out.println("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+
+                getActivity().recreate();
+                //activateCameraReader(); //call your dependent logic
             }
         }
     }
