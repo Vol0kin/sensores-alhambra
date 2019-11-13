@@ -18,7 +18,7 @@ public class BlueprintsActivity extends AppCompatActivity {
     private void showImageTextInfo(String fileName, String title, String information) {
 
         // Obtener ImageView del plano
-        imagenPlano = (ImageView) findViewById(R.id.imagenPlano);
+        imagenPlano = (ImageView) findViewById(R.id.tituloPlano);
 
         // Intentar establecer imagen
         try {
@@ -28,7 +28,7 @@ public class BlueprintsActivity extends AppCompatActivity {
         }
 
         // Establecer titulo
-        tituloPlano = (TextView) findViewById(R.id.tituloPlano);
+        tituloPlano = (TextView) findViewById(R.id.imagenPlano);
         tituloPlano.setText(title);
 
         // Establecer informacion

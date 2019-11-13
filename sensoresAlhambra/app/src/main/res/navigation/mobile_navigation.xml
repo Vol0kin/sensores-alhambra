@@ -12,10 +12,10 @@
         tools:layout="@layout/fragment_camera" />
 
     <fragment
-        android:id="@+id/nav_maps"
-        android:name="com.example.sensoresAlhambra.ui.maps.MapsFragment"
-        android:label="@string/menu_maps"
-        tools:layout="@layout/fragment_maps" />
+        android:id="@+id/nav_viewar"
+        android:name="com.example.sensoresAlhambra.ui.viewAR.ViewARFragment"
+        android:label="@string/menu_viewAR"
+        tools:layout="@layout/fragment_viewar" />
 
     <fragment
         android:id="@+id/nav_navigation"

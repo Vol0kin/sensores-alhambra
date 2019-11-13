@@ -1,6 +1,5 @@
-package com.example.sensoresAlhambra.ui.maps;
+package com.example.sensoresAlhambra.ui.viewAR;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
@@ -10,10 +9,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -29,12 +25,11 @@ import com.google.vr.sdk.widgets.pano.VrPanoramaEventListener;
 import com.google.vr.sdk.widgets.pano.VrPanoramaView;
 
 import java.io.InputStream;
-import java.util.Arrays;
 
-public class MapsFragment extends Fragment implements SensorEventListener{
+public class ViewARFragment extends Fragment implements SensorEventListener{
     public static String imagen = "image.jpg";
 
-    private MapsViewModel  mapsViewModel;
+    private ViewARViewModel viewARViewModel;
     private VrPanoramaView mVRPanoramaView;
     private SensorManager sensorManager;
     public boolean loadImageSuccessful;
@@ -48,9 +43,9 @@ public class MapsFragment extends Fragment implements SensorEventListener{
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        mapsViewModel =
-                ViewModelProviders.of(this).get(MapsViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_maps, container, false);
+        viewARViewModel =
+                ViewModelProviders.of(this).get(ViewARViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_viewar, container, false);
         mVRPanoramaView = (VrPanoramaView) root.findViewById(R.id.vrPanoramaView);
         sensorManager = (SensorManager)getActivity().getSystemService(Context.SENSOR_SERVICE);
         loadPhotoSphere("image.jpg");
@@ -59,8 +54,6 @@ public class MapsFragment extends Fragment implements SensorEventListener{
 
         buttonPanoView = root.findViewById(R.id.botonPanoView);
         buttonPanoView.setVisibility(View.INVISIBLE);
-
-
 
         return root;
     }

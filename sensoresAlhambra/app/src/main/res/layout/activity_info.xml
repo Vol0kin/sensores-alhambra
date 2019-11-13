@@ -11,7 +11,7 @@
         android:layout_height="fill_parent">
 
         <ImageView
-            android:id="@+id/tituloPlano"
+            android:id="@+id/imagenPlano"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -20,32 +20,34 @@
             tools:srcCompat="@tools:sample/avatars[1]" />
 
         <TextView
-            android:id="@+id/imagenPlano"
+            android:id="@+id/tituloPlano"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tituloPlano"
+            android:layout_below="@id/imagenPlano"
             android:layout_marginTop="40px"
             android:text="TextView"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:layout_centerHorizontal="true"/>
 
         <TextView
-        android:id="@+id/plantaPlano"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/imagenPlano"
-        android:layout_marginTop="20px"
-        android:autoSizeTextType="uniform"
-        android:text="kfdngfdjkfdngfdjkfdngfdjkfdngfdjkfdngfdjkfdngfdjkfdngfdjkfdngfdjkfdngfdjkfdngfdjkfdngfdjkfdngfdjkfdngfdjkfdngfdjkfdngfdjkfdngfdjkfdngfdjkfdngfdjkfdngfdjkfdngfdjkfdngfdjkfdngfdjkfdngfdjkfdngfdjkfdng fdjkf dngfdjkfdngfdj" />
+            android:id="@+id/plantaPlano"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/tituloPlano"
+            android:layout_marginTop="20sp"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp"
+            android:autoSizeTextType="uniform"
+            android:text="plano" />
 
-    <RatingBar
-        android:id="@+id/ratingBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/plantaPlano"
-        android:layout_gravity="center"
-        android:layout_marginTop="50px" />
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/plantaPlano"
+            android:layout_gravity="center"
+            android:layout_marginTop="50px" />
 
     </RelativeLayout>
 </ScrollView>

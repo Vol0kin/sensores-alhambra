@@ -150,7 +150,7 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
 
 
         Polygon polygon = nMap.addPolygon(recOption);
-        polygon.setTag("arriba españa");
+        polygon.setTag("poligono1");
         polygon.setClickable(true);
 
         PolygonOptions recOption2 = new PolygonOptions()
@@ -192,7 +192,7 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
 
 
         Polygon polygon2 = nMap.addPolygon(recOption2);
-        polygon2.setTag("arriba portugal");
+        polygon2.setTag("poligono2");
         polygon2.setClickable(true);
 
         nMap.setOnPolygonClickListener(new GoogleMap.OnPolygonClickListener() {
@@ -200,14 +200,14 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
             public void onPolygonClick(Polygon polygon) {
                 String cases = (String)polygon.getTag();
                 switch((String)polygon.getTag()){
-                    case "arriba portugal":
-                        Toast.makeText(getContext(), "Fernando coméme los huevos", Toast.LENGTH_SHORT).show();
+                    case "poligono1":
+                        Toast.makeText(getContext(), "Patio interior", Toast.LENGTH_SHORT).show();
                         break;
-                    case "arriba españa":
-                        Toast.makeText(getContext(), "Jose coméme los huevos", Toast.LENGTH_SHORT).show();
+                    case "poligono2":
+                        Toast.makeText(getContext(), "Torre", Toast.LENGTH_SHORT).show();
                         break;
                     default:
-                        Toast.makeText(getContext(), "Vladis coméme los huevos", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Zona no registrada", Toast.LENGTH_SHORT).show();
                         break;
 
                 }

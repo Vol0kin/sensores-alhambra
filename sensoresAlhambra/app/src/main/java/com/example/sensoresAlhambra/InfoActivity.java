@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.sensoresAlhambra.ui.maps.MapsFragment;
+import com.example.sensoresAlhambra.ui.viewAR.ViewARFragment;
 
 import java.io.IOException;
 
@@ -35,29 +35,44 @@ public class InfoActivity extends AppCompatActivity implements SensorEventListen
         senAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_NORMAL);
 
-        if (MapsFragment.imagen.equals("image2.jpg")){
-            imageView = (ImageView) findViewById(R.id.tituloPlano);
+        if (ViewARFragment.imagen.equals("image2.jpg")){
+            imageView = (ImageView) findViewById(R.id.imagenPlano);
             try {
                 imageView.setImageDrawable(Drawable.createFromStream( getAssets().open("fuente.jpg"),null) );
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            tituloInfo = (TextView) findViewById(R.id.imagenPlano);
-            tituloInfo.setText("Fuente de mierda");
+            tituloInfo = (TextView) findViewById(R.id.tituloPlano);
+            tituloInfo.setText("Fuente");
             textInfo = (TextView) findViewById(R.id.plantaPlano);
-            String information = "Me rompés las pelotas fernando";
+            String information = "f. Manantial de agua que brota de la tierra:\n" +
+                    "fuente de aguas ferruginosas.\n" +
+                    "Construcción en los sitios públicos, como plazas, parques, etc., con caños y surtidores de agua, y que se destina a diferentes usos:\n" +
+                    "la fuente de la Cibeles.\n" +
+                    "Plato grande para servir la comida:\n" +
+                    "sirvió el besugo en una fuente de cristal.\n" +
+                    "Cantidad de comida que cabe en este plato:\n" +
+                    "hizo una fuente de macarrones.\n" +
+                    "Origen de algo, causa, principio:\n" +
+                    "su renuncia fue una fuente de problemas.\n" +
+                    "Aquello de que fluye con abundancia un líquido:\n" +
+                    "sus ojos eran una fuente de lágrimas.\n" +
+                    "Documento, obra o materiales que sirven de información o de inspiración a un autor:\n" +
+                    "el Renacimiento bebió de fuentes grecolatinas.\n" +
+                    "impr. Tipo de letra:\n" +
+                    "¿qué fuente quieres que use en el documento?";
             textInfo.setText(information);
         }
-        else if (MapsFragment.imagen.equals("image3.jpg")){
-            imageView = (ImageView) findViewById(R.id.tituloPlano);
+        else if (ViewARFragment.imagen.equals("image3.jpg")){
+            imageView = (ImageView) findViewById(R.id.imagenPlano);
             try {
                 imageView.setImageDrawable(Drawable.createFromStream( getAssets().open("palacio.jpg"),null) );
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            tituloInfo = (TextView) findViewById(R.id.imagenPlano);
+            tituloInfo = (TextView) findViewById(R.id.tituloPlano);
             tituloInfo.setText("Palacio de Carlos V");
             textInfo = (TextView) findViewById(R.id.plantaPlano);
             String information = "El palacio de Carlos V es una construcción renacentista situada en la colina de la Alhambra de la ciudad española de Granada, en Andalucía. Desde 1958, es sede del Museo de Bellas Artes de Granada y, desde 1994, también es sede del Museo de la Alhambra.";

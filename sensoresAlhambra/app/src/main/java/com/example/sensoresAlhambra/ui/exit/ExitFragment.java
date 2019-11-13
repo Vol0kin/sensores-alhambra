@@ -1,5 +1,8 @@
 package com.example.sensoresAlhambra.ui.exit;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +19,22 @@ public class ExitFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.fragment_camera, container, false);
+        View root = inflater.inflate(R.layout.fragment_exit, container, false);
 
-        System.exit(0);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("¿Estas seguro que quieres salir de esta maravillosa app?")
+                .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        System.exit(0);
+                    }
+                })
+                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        getActivity().onBackPressed();
+                    }
+                });
+        builder.create();
+        builder.show();
         return root;
     }
 }
