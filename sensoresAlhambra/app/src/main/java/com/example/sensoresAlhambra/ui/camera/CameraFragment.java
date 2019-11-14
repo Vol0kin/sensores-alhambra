@@ -4,12 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.hardware.Sensor;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Vibrator;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -17,36 +12,40 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.sensoresAlhambra.BlueprintsActivity;
-import com.example.sensoresAlhambra.InfoActivity;
 import com.example.sensoresAlhambra.R;
-import com.example.sensoresAlhambra.ui.navigation.NavigationFragment;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
-import java.util.Arrays;
 
+
+
+// Fragmento de cámara (source: GoogleGlass o similar)
 public class CameraFragment extends Fragment {
     SurfaceView surfaceView;
     CameraSource cameraSource;
     BarcodeDetector barcodeDetector;
-    TextView textView;
     private CameraViewModel cameraViewModel;
     public static String lecturaQr;
 
 
+    /**
+     * Creación de la vista
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return Devuelve vista del padre
+     */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -63,7 +62,6 @@ public class CameraFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        //cameraSource.stop();
     }
 
     @Override
@@ -77,11 +75,18 @@ public class CameraFragment extends Fragment {
         super.onDestroy();
     }
 
+
+    /**
+     *     Activamos el lector de QR en cámara
+     *     Simula reconozimiento de objetos en tiempo real
+     */
+
     public void activateCameraReader(){
+
         barcodeDetector = new BarcodeDetector.Builder(getContext())
                 .setBarcodeFormats(Barcode.QR_CODE).build();
         cameraSource= new CameraSource.Builder(getContext(), barcodeDetector)
-                .setRequestedPreviewSize(640,480).setAutoFocusEnabled(true).build();
+                .setAutoFocusEnabled(true).build();
 
 
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
@@ -111,10 +116,25 @@ public class CameraFragment extends Fragment {
 
         barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
             @Override
+            /**
+             *
+             */
             public void release() {
 
             }
 
+
+
+
+            /**
+             *
+             *Función activada cada vez que recibe un código QR
+             *  El código QR entrará en cola y se irán analizando uno a uno
+             *  Luego de leer el código QR paramos la cámara para que no vuelva a entrar el mismo muchas veces en la cola
+             *  Lanzamos la aplicación con la información y la valoración para el usuario
+             *  Limpiamos la cola de QR por si existen copias del mismo QR
+             * @param detections Cola de QRs
+             */
             @Override
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> qrCodes = detections.getDetectedItems();
@@ -135,9 +155,6 @@ public class CameraFragment extends Fragment {
                         startActivity(intent);
                         qrCodes.clear();
                         }
-                        //Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(qrCodes.valueAt(qrCodes.size()-1).displayValue));
-                        //startActivity(myIntent);
-                        //qrCodes.clear();
 
                     });
 
