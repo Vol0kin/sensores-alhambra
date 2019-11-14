@@ -201,10 +201,10 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
                 String cases = (String)polygon.getTag();
                 switch((String)polygon.getTag()){
                     case "poligono1":
-                        Toast.makeText(getContext(), "Patio interior", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Patio de Machuca", Toast.LENGTH_SHORT).show();
                         break;
                     case "poligono2":
-                        Toast.makeText(getContext(), "Torre", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Alcazaba", Toast.LENGTH_SHORT).show();
                         break;
                     default:
                         Toast.makeText(getContext(), "Zona no registrada", Toast.LENGTH_SHORT).show();
