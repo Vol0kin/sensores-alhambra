@@ -2,8 +2,11 @@ package com.example.sensoresAlhambra;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,27 +17,10 @@ import java.io.IOException;
 public class BlueprintsActivity extends AppCompatActivity {
     TextView tituloPlano, plantaPlano;
     ImageView imagenPlano;
+    private ScaleGestureDetector mScaleGestureDetector;
+    private float mScale = 1f;
+    private Matrix mMatrix = new Matrix();
 
-    private void showImageTextInfo(String fileName, String title, String information) {
-
-        // Obtener ImageView del plano
-        imagenPlano = (ImageView) findViewById(R.id.tituloPlano);
-
-        // Intentar establecer imagen
-        try {
-            imagenPlano.setImageDrawable(Drawable.createFromStream( getAssets().open(fileName),null) );
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // Establecer titulo
-        tituloPlano = (TextView) findViewById(R.id.imagenPlano);
-        tituloPlano.setText(title);
-
-        // Establecer informacion
-        plantaPlano = (TextView) findViewById(R.id.plantaPlano);
-        plantaPlano.setText(information);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,5 +75,47 @@ public class BlueprintsActivity extends AppCompatActivity {
 
         // Mostrar la informacion
         this.showImageTextInfo(fileName, title, information);
+
+        mScaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
+    }
+
+
+    private void showImageTextInfo(String fileName, String title, String information) {
+
+        // Obtener ImageView del plano
+        imagenPlano = (ImageView) findViewById(R.id.imagenPlano);
+
+        // Intentar establecer imagen
+        try {
+            imagenPlano.setImageDrawable(Drawable.createFromStream( getAssets().open(fileName),null) );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Establecer titulo
+        tituloPlano = (TextView) findViewById(R.id.tituloPlano);
+        tituloPlano.setText(title);
+
+        // Establecer informacion
+        plantaPlano = (TextView) findViewById(R.id.plantaPlano);
+        plantaPlano.setText(information);
+    }
+
+
+    public boolean onTouchEvent(MotionEvent ev) {
+        mScaleGestureDetector.onTouchEvent(ev);
+        return true;
+    }
+
+    private class ScaleListener extends ScaleGestureDetector.
+            SimpleOnScaleGestureListener {
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            mScale *= detector.getScaleFactor();
+            mScale = Math.max(0.1f, Math.min(mScale, 5.0f));
+            mMatrix.setScale(mScale, mScale);
+            imagenPlano.setImageMatrix(mMatrix);
+            return true;
+        }
     }
 }

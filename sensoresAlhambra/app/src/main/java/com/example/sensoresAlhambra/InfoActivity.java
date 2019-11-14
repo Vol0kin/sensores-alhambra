@@ -36,14 +36,14 @@ public class InfoActivity extends AppCompatActivity implements SensorEventListen
         sensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_NORMAL);
 
         if (ViewARFragment.imagen.equals("image2.jpg")){
-            imageView = (ImageView) findViewById(R.id.imagenPlano);
+            imageView = (ImageView) findViewById(R.id.tituloPlano);
             try {
                 imageView.setImageDrawable(Drawable.createFromStream( getAssets().open("fuente.jpg"),null) );
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            tituloInfo = (TextView) findViewById(R.id.tituloPlano);
+            tituloInfo = (TextView) findViewById(R.id.imagenPlano);
             tituloInfo.setText("Fuente");
             textInfo = (TextView) findViewById(R.id.plantaPlano);
             String information = "f. Manantial de agua que brota de la tierra:\n" +
@@ -65,14 +65,14 @@ public class InfoActivity extends AppCompatActivity implements SensorEventListen
             textInfo.setText(information);
         }
         else if (ViewARFragment.imagen.equals("image3.jpg")){
-            imageView = (ImageView) findViewById(R.id.imagenPlano);
+            imageView = (ImageView) findViewById(R.id.tituloPlano);
             try {
                 imageView.setImageDrawable(Drawable.createFromStream( getAssets().open("palacio.jpg"),null) );
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            tituloInfo = (TextView) findViewById(R.id.tituloPlano);
+            tituloInfo = (TextView) findViewById(R.id.imagenPlano);
             tituloInfo.setText("Palacio de Carlos V");
             textInfo = (TextView) findViewById(R.id.plantaPlano);
             String information = "El palacio de Carlos V es una construcción renacentista situada en la colina de la Alhambra de la ciudad española de Granada, en Andalucía. Desde 1958, es sede del Museo de Bellas Artes de Granada y, desde 1994, también es sede del Museo de la Alhambra.";
