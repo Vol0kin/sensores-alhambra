@@ -46,9 +46,6 @@ public class CameraFragment extends Fragment {
     private CameraViewModel cameraViewModel;
     public static String lecturaQr;
 
-    private static final int CAMERA_PERMISSION_CAMERA = 0x000000;
-    private static final int LOCATION_PERMISSION_LOCATION = 0x000001;
-
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -60,30 +57,13 @@ public class CameraFragment extends Fragment {
         surfaceView = (SurfaceView) root.findViewById(R.id.camerapreview);
 
 
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CAMERA)) {
-                //activateCameraReader();
-            } else {
-                requestPermissions(new String[]{Manifest.permission.CAMERA},
-                        CAMERA_PERMISSION_CAMERA);
-            }
-        }
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
-                //activateCameraReader();
-            } else {
-                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        LOCATION_PERMISSION_LOCATION);
-            }
-        }
-
         return root;
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        cameraSource.stop();
+        //cameraSource.stop();
     }
 
     @Override
@@ -168,20 +148,6 @@ public class CameraFragment extends Fragment {
         });
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
-        if (requestCode == CAMERA_PERMISSION_CAMERA) {
-
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                //all permissions have been granted
-                System.out.println("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-
-                getActivity().recreate();
-                //activateCameraReader(); //call your dependent logic
-            }
-        }
-    }
 
 }

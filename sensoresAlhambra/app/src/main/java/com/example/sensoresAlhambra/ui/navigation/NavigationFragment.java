@@ -73,41 +73,6 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
         View root = inflater.inflate(R.layout.fragment_navigation, container, false);
         googleApiClient = new GoogleApiClient.Builder(getContext(), this, this).addApi(LocationServices.API).build();
 
-        if (ContextCompat.checkSelfPermission(getContext()
-                ,
-                Manifest
-                        .permission
-                        .ACCESS_FINE_LOCATION)
-                != PackageManager
-                .PERMISSION_GRANTED) {
-
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity()
-                    ,
-                    Manifest
-                            .permission
-                            .ACCESS_FINE_LOCATION)) {
-
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
-            } else {
-
-                // No explanation needed, we can request the permission.
-
-                ActivityCompat.requestPermissions(getActivity()
-                        ,
-                        new String[]{Manifest.permission
-                                .ACCESS_FINE_LOCATION},
-                        LOCATION_PERMISSION_LOCATION);
-
-                // CAMERA_PERMISSION_CAMERA is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-            }
-        }
-
 
         int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity().getApplicationContext());
 
@@ -127,6 +92,7 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
         return root;
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
         nMap = googleMap;
@@ -267,27 +233,9 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
         //Location lastLocation = LocationServices.FusedLolastLocationcationApi.getLastLocation(googleApiClient);
 
         LocationManager lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        if (ContextCompat.checkSelfPermission(getContext(),Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getContext(),Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    Activity#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for Activity#requestPermissions for more details.
-            return;
-        }
+
         lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIEMPO_ENTRE_UPDATES, MIN_CAMBIO_DISTANCIA_PARA_UPDATES, locListener, Looper.getMainLooper());
-        /*if (ContextCompat.checkSelfPermission(getContext(),Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    Activity#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for Activity#requestPermissions for more details.
-            return;
-        }*/
+
         double latitude = 5;
         double longitude = 5;
         @SuppressLint("MissingPermission") Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
