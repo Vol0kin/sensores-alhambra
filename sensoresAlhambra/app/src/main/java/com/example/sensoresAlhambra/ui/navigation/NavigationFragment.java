@@ -1,13 +1,10 @@
 package com.example.sensoresAlhambra.ui.navigation;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
-
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -24,8 +21,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -47,8 +42,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.io.IOException;
 
@@ -171,11 +164,10 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
         nMap.setOnPolygonClickListener(new GoogleMap.OnPolygonClickListener() {
             @Override
             public void onPolygonClick(Polygon polygon) {
-                String cases = (String)polygon.getTag();
                 switch((String)polygon.getTag()){
                     case "poligono1":
                         try {
-                            image.setImageDrawable(Drawable.createFromStream( getActivity().getAssets().open("fuente.jpg"),null) );
+                            image.setImageDrawable(Drawable.createFromStream( getActivity().getAssets().open("machuca.png"),null) );
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -187,7 +179,7 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
 
                     case "poligono2":
                         try {
-                            image.setImageDrawable(Drawable.createFromStream( getActivity().getAssets().open("palacio.jpg"),null) );
+                            image.setImageDrawable(Drawable.createFromStream( getActivity().getAssets().open("alcazaba.png"),null) );
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -227,31 +219,13 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
         nMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding));
 
         //set zoom to level to current so that you won't be able to zoom out viz. move outside bounds
-
         nMap.setMinZoomPreference(nMap.getCameraPosition().zoom+2);
-
-        //Location lastLocation = LocationServices.FusedLolastLocationcationApi.getLastLocation(googleApiClient);
 
         LocationManager lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
         lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIEMPO_ENTRE_UPDATES, MIN_CAMBIO_DISTANCIA_PARA_UPDATES, locListener, Looper.getMainLooper());
 
-        double latitude = 5;
-        double longitude = 5;
         @SuppressLint("MissingPermission") Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        if(location!= null){
-            latitude = location.getLatitude();
-            longitude = location.getLongitude();
-        }
-
-        //Add a marker in Syndey
-        LatLng sydney = new LatLng(latitude, longitude);
-        //LatLng sydney = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-        //System.out.println(lastLocation.getLatitude());
-        //nMap.addMarker(new MarkerOptions().position(sydney).title("Estoy mamadisimo hdtpm").icon(BitmapDescriptorFactory.defaultMarker(HUE_VIOLET)));
-        float zoomlevel = 16;
-        //nMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, zoomlevel));
-
     }
 
     @Override
