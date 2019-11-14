@@ -30,8 +30,6 @@ public class BlueprintsActivity extends AppCompatActivity {
         // Variables que contendran informacion sobre la imagen a mostrar
         String fileName, title, information;
 
-
-        // Dependiendo del resultado del lector QR, actualizamos la imágen y la información
         switch(CameraFragment.lecturaQr) {
             case("fuente"):
                 fileName = "fuente.jpg";
@@ -75,7 +73,7 @@ public class BlueprintsActivity extends AppCompatActivity {
                 break;
         }
 
-        // Mostramos dependiendo de las especificaciones
+        // Mostrar la informacion
         this.showImageTextInfo(fileName, title, information);
 
         mScaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
@@ -85,7 +83,7 @@ public class BlueprintsActivity extends AppCompatActivity {
     private void showImageTextInfo(String fileName, String title, String information) {
 
         // Obtener ImageView del plano
-        imagenPlano = (ImageView) findViewById(R.id.imagenPlano);
+        imagenPlano = (ImageView) findViewById(R.id.titleInfo);
 
         // Intentar establecer imagen
         try {
@@ -95,11 +93,11 @@ public class BlueprintsActivity extends AppCompatActivity {
         }
 
         // Establecer titulo
-        tituloPlano = (TextView) findViewById(R.id.tituloPlano);
+        tituloPlano = (TextView) findViewById(R.id.imageInfo);
         tituloPlano.setText(title);
 
         // Establecer informacion
-        plantaPlano = (TextView) findViewById(R.id.plantaPlano);
+        plantaPlano = (TextView) findViewById(R.id.floorInfo);
         plantaPlano.setText(information);
     }
 

@@ -11,7 +11,7 @@
         android:layout_height="fill_parent">
 
         <TextView
-            android:id="@+id/tituloPlano"
+            android:id="@+id/imageInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -22,20 +22,20 @@
             android:textStyle="bold" />
 
         <ImageView
-            android:id="@+id/imagenPlano"
+            android:id="@+id/titleInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tituloPlano"
+            android:layout_below="@id/imageInfo"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             android:layout_marginTop="38dp"
             tools:src="@tools:sample/avatars" />
 
         <TextView
-            android:id="@+id/plantaPlano"
+            android:id="@+id/floorInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/imagenPlano"
+            android:layout_below="@+id/titleInfo"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="40px"
             android:autoSizeTextType="uniform"
