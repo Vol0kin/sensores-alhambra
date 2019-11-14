@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -18,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -48,6 +50,8 @@ import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.io.IOException;
+
 import static android.content.ContentValues.TAG;
 import static com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_VIOLET;
 
@@ -60,6 +64,7 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
     //Minimo tiempo para updates en Milisegundos
     private static final long MIN_TIEMPO_ENTRE_UPDATES = 1000 * 5 * 1; //1 minuto
     private GoogleMap nMap;
+    private ImageView image;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -116,6 +121,8 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
             dialog.show();
         }
 
+        image = (ImageView) root.findViewById(R.id.imageNavigation);
+        image.setVisibility(View.INVISIBLE);
 
         return root;
     }
@@ -201,10 +208,27 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
                 String cases = (String)polygon.getTag();
                 switch((String)polygon.getTag()){
                     case "poligono1":
-                        Toast.makeText(getContext(), "Patio de Machuca", Toast.LENGTH_SHORT).show();
+                        try {
+                            image.setImageDrawable(Drawable.createFromStream( getActivity().getAssets().open("fuente.jpg"),null) );
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        if (image.getVisibility() == View.INVISIBLE)
+                            image.setVisibility(View.VISIBLE);
+                        else
+                            image.setVisibility(View.INVISIBLE);
                         break;
+
                     case "poligono2":
-                        Toast.makeText(getContext(), "Alcazaba", Toast.LENGTH_SHORT).show();
+                        try {
+                            image.setImageDrawable(Drawable.createFromStream( getActivity().getAssets().open("palacio.jpg"),null) );
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        if (image.getVisibility() == View.INVISIBLE)
+                            image.setVisibility(View.VISIBLE);
+                        else
+                            image.setVisibility(View.INVISIBLE);
                         break;
                     default:
                         Toast.makeText(getContext(), "Zona no registrada", Toast.LENGTH_SHORT).show();
