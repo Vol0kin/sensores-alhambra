@@ -50,8 +50,6 @@ import static com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_VIOL
 
 public class NavigationFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
-    private NavigationViewModel dashboardViewModel;
-
 
     private GoogleApiClient googleApiClient;
 
@@ -77,8 +75,6 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
      */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel =
-                ViewModelProviders.of(this).get(NavigationViewModel.class);
         View root = inflater.inflate(R.layout.fragment_navigation, container, false);
         googleApiClient = new GoogleApiClient.Builder(getContext(), this, this).addApi(LocationServices.API).build();
 

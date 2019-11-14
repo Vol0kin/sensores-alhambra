@@ -10,22 +10,36 @@
 \usepackage{enumitem}						% Permitir enumerate con distintos simbolos
 \usepackage[T1]{fontenc}					% Usar textsc en sections
 \usepackage{amsmath}						% Símbolos matemáticos
+\usepackage[simplified]{pgf-umlcd}
+\usepackage{pdflscape}
+\usetikzlibrary{babel} % Problemas del español al usar <,> para las citas
+\usepackage{typearea} % Paginas horizontales
+
 
 % Comando para poner el nombre de la asignatura
-\newcommand{\asignatura}{Asignatura}
-\newcommand{\autor}{Vladislav Nikolov Vasilev}
-\newcommand{\titulo}{TITULO}
-\newcommand{\subtitulo}{Subtitulo}
+\newcommand{\asignatura}{Nuevos Paradigmas de Interacción}
+\newcommand{\autorv}{Vladislav Nikolov Vasilev}
+\newcommand{\autorj}{José María Sánchez Guerrero}
+\newcommand{\autorf}{Fernando Vallecillos Ruiz}
+\newcommand{\titulo}{Práctica Sensores}
+\newcommand{\subtitulo}{Memoria Técnica}
+
 
 % Configuracion de encabezados y pies de pagina
 \pagestyle{fancy}
-\lhead{\autor{}}
+\lhead{Vladislav, José María, Fernando}
 \rhead{\asignatura{}}
 \lfoot{Grado en Ingeniería Informática}
 \cfoot{}
 \rfoot{\thepage}
 \renewcommand{\headrulewidth}{0.4pt}		% Linea cabeza de pagina
 \renewcommand{\footrulewidth}{0.4pt}		% Linea pie de pagina
+
+
+% new pagestyle
+\fancypagestyle{lscape}{
+  \headwidth\textwidth
+}
 
 \begin{document}
 \pagenumbering{gobble}
@@ -55,15 +69,15 @@
 
 \centering
 
-\textbf{Autor}\\ {\autor{}}\\[2.5ex]
+\textbf{Autores}\\ {\autorv{}}\\{\autorj{}}\\{\autorf{}}\\[2.5ex]
 \textbf{Rama}\\ {Computación y Sistemas Inteligentes}\\[2.5ex]
 \vspace{0.3cm}
 
 \includegraphics[scale=0.3]{img/etsiit.jpeg}
 
-\vspace{0.7cm}
+\vspace{0.5cm}
 \textsc{Escuela Técnica Superior de Ingenierías Informática y de Telecomunicación}\\
-\vspace{1cm}
+\vspace{0.5cm}
 \textsc{Curso 2019-2020}
 \end{minipage}
 \end{titlepage}
@@ -75,6 +89,86 @@
 \newpage
 
 \setlength{\parskip}{1em}
+
+% start new page before setting page layout,
+% otherwise previous page is also affected
+\KOMAoption{paper}{landscape}%
+\typearea{12}% sets new DIV
+
+% Establecer pagina horizontal
+\recalctypearea
+% needed to show page in landscape in viewer
+\pdfpageheight=\paperheight
+\pdfpagewidth=\paperwidth
+% Poner estilo
+\pagestyle{lscape}
+
+\section{Diagrama de clases}
+
+A continuación se puede ver el diagrama de clases. No se han incluído atributos ni métodos porque se van a describir más adelante.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=0.7]
+	\begin{class}[text width=3cm]{MainActivity}{0,0}
+	\end{class}
+	
+	\begin{class}[text width=4cm]{CameraFragment}{-9, -5}
+	\end{class}
+	\begin{class}[text width=3cm]{ExitFragment}{-7, -1}
+	\end{class}
+	\begin{class}[text width=5cm]{NavigationFragment}{0, -6.5}
+	\end{class}
+	\begin{class}[text width=4cm]{ViewARFragment}{9, -5}
+	\end{class}
+	\begin{class}[text width=4cm]{BlueprintsActivity}{-9, -9}
+	\end{class}
+	\begin{class}[text width=3cm]{InfoActivity}{9, -9}
+	\end{class}
+	
+	\unidirectionalAssociation{MainActivity}{}{1}{CameraFragment}
+	\unidirectionalAssociation{MainActivity}{}{1}{ExitFragment}
+	\unidirectionalAssociation{MainActivity}{}{1}{NavigationFragment}
+	\unidirectionalAssociation{MainActivity}{}{1}{ViewARFragment}
+	
+	\draw[umlcd style dashed line,->] (ViewARFragment) -- node[above, sloped, black] {$<<$uses$>>$} (InfoActivity);
+	\draw[umlcd style dashed line,->] (CameraFragment) -- node[above, sloped, black] {$<<$uses$>>$} (BlueprintsActivity);
+\end{tikzpicture}
+\caption{Diagrama de clases simplificado.}
+\label{fig:class-diagram}
+\end{figure}
+
+\KOMAoptions{paper=portrait}
+\recalctypearea
+\pdfpageheight=\paperheight
+\pdfpagewidth=\paperwidth
+\headwidth\textwidth
+
+\section{Descripción de las clases}
+
+Una vez visto el diagrama de clases, vamos a proceder a comentar brevemente qué es lo que hace cada clase:
+
+\begin{itemize}
+	\item \textbf{MainActivity}: Es la actividad principal, encargada de construir la barra de actividades que permite acceder
+	a los \textit{fragments} y de solicitar los permisos de cámara y localización necesarios para ejecutar la aplicación.
+	\item \textbf{ExitFragment}: \textit{Fragment} que permite salir de la aplicación.
+	\item \textbf{CameraFragment}: \textit{Fragment} que permite acceder al sensor de la cámara para poder realizar la lectura
+	de códigos QR. Se encarga de leerlos y pasarlos a \textbf{BlueprintActivity} para que éste los procese. Para la detección y
+	lectura de los códigos QR se utiliza la biblioteca \textit{BarcodeDetector}.
+	\item \textbf{NavigationFragment}: \textit{Fragment} que permite acceder a un mapa de la Alhambra y navegar por él, destacando
+	algunos de los edificios y permitiendo interactuar con ellos. Se utiliza la API de GoogleMaps para trabajar con mapas.
+	\item \textbf{ViewARFragment}: \textit{Fragment} que simula la visión en realidad aumentada del interior de los Palacios
+	Nazaríes. Simula que detecta zonas interesantes y las destaca. Cuando se realiza un gesto de \textit{shake} con el móvil,
+	muestra más información sobre el elemento destacado, utilizando para ello la clase \textbf{InfoActivity}.
+	\item \textbf{BlueprintsActivity}: Actividad que se encarga de recibir las lecturas QR de \textbf{CameraFragment} y de
+	procesarlas, mostrando la información correspondiente a la lectura.
+	\item \textbf{InfoActivity}: Clase que muestra información sobre la zona que ha sido destacada en \textbf{ViewARFragment}.
+	Procesa la información que tiene ésta y muestra una u otra información.
+\end{itemize}
+
+\section{Atributos de las clases}
+
+\section{Métodos de las clases}
 
 \newpage
 

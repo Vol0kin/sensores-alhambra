@@ -12,12 +12,10 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.example.sensoresAlhambra.BlueprintsActivity;
 import com.example.sensoresAlhambra.R;
@@ -35,7 +33,6 @@ public class CameraFragment extends Fragment {
     SurfaceView surfaceView;
     CameraSource cameraSource;
     BarcodeDetector barcodeDetector;
-    private CameraViewModel cameraViewModel;
     public static String lecturaQr;
 
 
@@ -49,8 +46,6 @@ public class CameraFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        cameraViewModel =
-                ViewModelProviders.of(this).get(CameraViewModel.class);
         View root = inflater.inflate(R.layout.fragment_camera, container, false);
 
         surfaceView = (SurfaceView) root.findViewById(R.id.camerapreview);

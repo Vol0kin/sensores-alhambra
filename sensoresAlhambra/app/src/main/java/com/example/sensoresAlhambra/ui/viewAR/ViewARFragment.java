@@ -28,8 +28,6 @@ import java.io.InputStream;
 
 public class ViewARFragment extends Fragment implements SensorEventListener{
     public static String imagen = "image.jpg";
-
-    private ViewARViewModel viewARViewModel;
     private VrPanoramaView mVRPanoramaView;
     private SensorManager sensorManager;
     public boolean loadImageSuccessful;
@@ -55,8 +53,6 @@ public class ViewARFragment extends Fragment implements SensorEventListener{
      */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        viewARViewModel =
-                ViewModelProviders.of(this).get(ViewARViewModel.class);
         View root = inflater.inflate(R.layout.fragment_viewar, container, false);
         mVRPanoramaView = (VrPanoramaView) root.findViewById(R.id.vrPanoramaView);
 
