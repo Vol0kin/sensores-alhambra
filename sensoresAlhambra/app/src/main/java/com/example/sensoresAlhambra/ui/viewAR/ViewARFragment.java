@@ -35,23 +35,42 @@ public class ViewARFragment extends Fragment implements SensorEventListener{
     public boolean loadImageSuccessful;
     private ImageButton buttonPanoView;
 
+
+    /**
+     * Rotación de la cabeza en grados
+     */
     private float[] mHeadRotation = new float[2];
 
     private long lastUpdate = 0;
     private float last_x, last_y, last_z;
     private static final int SHAKE_THRESHOLD = 200;
 
+
+    /**
+     * Utilizamos la API de Google para cargar una imagen en un visor de 360º
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         viewARViewModel =
                 ViewModelProviders.of(this).get(ViewARViewModel.class);
         View root = inflater.inflate(R.layout.fragment_viewar, container, false);
         mVRPanoramaView = (VrPanoramaView) root.findViewById(R.id.vrPanoramaView);
+
+        // Cargamos los sensores
         sensorManager = (SensorManager)getActivity().getSystemService(Context.SENSOR_SERVICE);
+
+        // Cargamos la foto elegida
         loadPhotoSphere("image.jpg");
+
+        // Creamos un listener
         mVRPanoramaView.setEventListener(new ActivityEventListener());
         mVRPanoramaView.getHeadRotation(mHeadRotation);
 
+        // Creamos botón
         buttonPanoView = root.findViewById(R.id.botonPanoView);
         buttonPanoView.setVisibility(View.INVISIBLE);
 
@@ -63,7 +82,7 @@ public class ViewARFragment extends Fragment implements SensorEventListener{
         super.onPause();
         mVRPanoramaView.pauseRendering();
 
-        // Don't receive any more updates from either sensor.
+        // Parar los listeners
         sensorManager.unregisterListener(this);
     }
 
@@ -72,13 +91,10 @@ public class ViewARFragment extends Fragment implements SensorEventListener{
         super.onResume();
         mVRPanoramaView.resumeRendering();
 
-        // Get updates from the accelerometer and magnetometer at a constant rate.
-        // To make batch operations more efficient and reduce power consumption,
-        // provide support for delaying updates to the application.
-        //
-        // In this example, the sensor reporting delay is small enough such that
-        // the application receives an update before the system checks the sensor
-        // readings again.
+        /**
+         * Volvemos a registrar los listener para tener sensores para el visor.
+         * Establecemos el intervalo entre actualizaciones.
+         */
         Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         if (accelerometer != null) {
             sensorManager.registerListener((SensorEventListener) this, accelerometer,
@@ -98,7 +114,10 @@ public class ViewARFragment extends Fragment implements SensorEventListener{
     }
 
 
-
+    /**
+     * Carga la foto en el manager
+     * @param foto
+     */
     private void loadPhotoSphere(String foto) {
         VrPanoramaView.Options options = new VrPanoramaView.Options();
         InputStream inputStream = null;
@@ -116,12 +135,13 @@ public class ViewARFragment extends Fragment implements SensorEventListener{
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        // Do something here if sensor accuracy changes.
-        // You must implement this callback in your code.
+        // En caso de que la precisión cambie
     }
 
-    // Get readings from accelerometer and magnetometer. To simplify calculations,
-    // consider storing these readings as unit vectors.
+    /**
+     * Actualizamos los valores a partir de los sensores cuando cambian
+     * @param sensorEvent
+     */
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         Sensor mySensor = sensorEvent.sensor;
@@ -133,12 +153,14 @@ public class ViewARFragment extends Fragment implements SensorEventListener{
 
             long curTime = System.currentTimeMillis();
 
+            // Chequea cada cuanto actualizamos las imagenes
             if ((curTime - lastUpdate) > 250) {
                 long diffTime = (curTime - lastUpdate);
                 lastUpdate = curTime;
 
                 float speed = Math.abs(y - last_y )/ diffTime * 10000;
 
+                // Establecemos un mínimo de velocidad y comprobamos la imagen
                 if (speed > SHAKE_THRESHOLD && !imagen.equals("image.jpg")) {
                     Intent intent = new Intent(getContext(), InfoActivity.class);
                     startActivity(intent);
@@ -151,10 +173,17 @@ public class ViewARFragment extends Fragment implements SensorEventListener{
         }
 
 
+        // Actualizamos el vector y comprobamos hacia donde estamos mirando
         mVRPanoramaView.getHeadRotation(mHeadRotation);
+        // Actualizamos (si hace falta)
         updateReticule();
     }
 
+    /**
+     * Comprobamos la rotación en los diferentes ejes.
+     * Dependiendo de los valores, comprovamos que imagen está cargada y,
+     * si se necesita, cargamos una nueva
+     */
     private void updateReticule() {
         if(mHeadRotation[1] > -60 && mHeadRotation[1] < -20 && mHeadRotation[0] > -20 && mHeadRotation[0] < 20){
             if (!imagen.equals("image2.jpg")) {
@@ -176,9 +205,12 @@ public class ViewARFragment extends Fragment implements SensorEventListener{
         }
     }
 
+    /**
+     * Listener del visor
+     */
     private class ActivityEventListener extends VrPanoramaEventListener {
         /**
-         * Called by pano widget on the UI thread when it's done loading the image.
+         * Esta función es llamada luego de cargar la imagen
          */
         @Override
         public void onLoadSuccess() {
@@ -186,7 +218,7 @@ public class ViewARFragment extends Fragment implements SensorEventListener{
         }
 
         /**
-         * Called by pano widget on the UI thread on any asynchronous error.
+         * Es llamada si existe un error asíncrono (normalmente al cargar)
          */
         @Override
         public void onLoadError(String errorMessage) {

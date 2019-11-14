@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -78,7 +79,7 @@ public class BlueprintsActivity extends AppCompatActivity {
         // Mostramos dependiendo de las especificaciones
         this.showImageTextInfo(fileName, title, information);
 
-        mScaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
+        mScaleGestureDetector = new ScaleGestureDetector(getApplicationContext(), new ScaleListener());
     }
 
 
@@ -103,7 +104,7 @@ public class BlueprintsActivity extends AppCompatActivity {
         plantaPlano.setText(information);
     }
 
-
+    @Override
     public boolean onTouchEvent(MotionEvent ev) {
         mScaleGestureDetector.onTouchEvent(ev);
         return true;

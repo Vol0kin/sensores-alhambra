@@ -15,7 +15,13 @@ import com.example.sensoresAlhambra.R;
 
 public class ExitFragment extends Fragment {
 
-
+    /**
+     * Asegura si el usuario necesita salir
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 

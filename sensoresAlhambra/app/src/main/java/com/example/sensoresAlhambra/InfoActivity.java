@@ -27,6 +27,11 @@ public class InfoActivity extends AppCompatActivity implements SensorEventListen
     private float last_x, last_y, last_z;
     private static final int SHAKE_THRESHOLD = 200;
 
+
+    /**
+     * Creamos la vista principal donde analiza que imagen e información cargar
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,14 +40,21 @@ public class InfoActivity extends AppCompatActivity implements SensorEventListen
         senAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_NORMAL);
 
+
+        // Comprueba la imagen
         if (ViewARFragment.imagen.equals("image2.jpg")){
+
             imageView = (ImageView) findViewById(R.id.tituloPlano);
+
+            // Carga la nueva imagen y comprueba por errores
             try {
                 imageView.setImageDrawable(Drawable.createFromStream( getAssets().open("fuente.jpg"),null) );
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
+
+            // Actualiza la información necesaria
             tituloInfo = (TextView) findViewById(R.id.imagenPlano);
             tituloInfo.setText("Fuente");
             textInfo = (TextView) findViewById(R.id.plantaPlano);
@@ -63,7 +75,7 @@ public class InfoActivity extends AppCompatActivity implements SensorEventListen
                     "impr. Tipo de letra:\n" +
                     "¿qué fuente quieres que use en el documento?";
             textInfo.setText(information);
-        }
+        }// Repite el mismo proceso para otra imagen
         else if (ViewARFragment.imagen.equals("image3.jpg")){
             imageView = (ImageView) findViewById(R.id.tituloPlano);
             try {
@@ -83,6 +95,10 @@ public class InfoActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
+    /**
+     * Actualizamos los valores a partir de los sensores cuando cambian
+     * @param sensorEvent
+     */
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         Sensor mySensor = sensorEvent.sensor;
@@ -94,12 +110,14 @@ public class InfoActivity extends AppCompatActivity implements SensorEventListen
 
             long curTime = System.currentTimeMillis();
 
+            // Chequea cada cuanto actualizamos las imagenes
             if ((curTime - lastUpdate) > 200) {
                 long diffTime = (curTime - lastUpdate);
                 lastUpdate = curTime;
 
                 float speed = Math.abs(x - last_x )/ diffTime * 10000;
 
+                // Establecemos un mínimo de velocidad
                 if (speed > SHAKE_THRESHOLD) {
                     onBackPressed();
                 }
@@ -114,7 +132,7 @@ public class InfoActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onPause() {
         super.onPause();
-        // Don't receive any more updates from either sensor.
+        // Parar los listeners
         sensorManager.unregisterListener(this);
     }
 
@@ -122,13 +140,11 @@ public class InfoActivity extends AppCompatActivity implements SensorEventListen
     public void onResume() {
         super.onResume();
 
-        // Get updates from the accelerometer and magnetometer at a constant rate.
-        // To make batch operations more efficient and reduce power consumption,
-        // provide support for delaying updates to the application.
-        //
-        // In this example, the sensor reporting delay is small enough such that
-        // the application receives an update before the system checks the sensor
-        // readings again.
+        /**
+         * Volvemos a registrar los listener para tener sensores para el visor.
+         * Establecemos el intervalo entre actualizaciones.
+         */
+
         Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         if (accelerometer != null) {
             sensorManager.registerListener((SensorEventListener) this, accelerometer,
@@ -148,6 +164,6 @@ public class InfoActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
+        // En caso de que la precisión cambie
     }
 }
