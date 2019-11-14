@@ -147,10 +147,8 @@ public class CameraFragment extends Fragment {
                         Vibrator vibrator = (Vibrator) getActivity().getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
                         vibrator.vibrate(50);
                         cameraSource.stop(); // ADD THIS. THIS WILL STOP CAMERA
-                        //barcodeDetector.release();
 
                         lecturaQr = qrCodes.valueAt(qrCodes.size() - 1).displayValue;
-                        Toast.makeText(getContext(), lecturaQr, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getContext(), BlueprintsActivity.class);
                         startActivity(intent);
                         qrCodes.clear();

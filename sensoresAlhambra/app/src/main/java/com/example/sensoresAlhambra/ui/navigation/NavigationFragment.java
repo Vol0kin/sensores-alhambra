@@ -51,14 +51,30 @@ import static com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_VIOL
 public class NavigationFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private NavigationViewModel dashboardViewModel;
-    private static final int LOCATION_PERMISSION_LOCATION = 0x000000;
+
+
     private GoogleApiClient googleApiClient;
+
+    /**
+     * Distancia entre updates en metros
+     */
     private static final long MIN_CAMBIO_DISTANCIA_PARA_UPDATES = 10; // 10 metros
-    //Minimo tiempo para updates en Milisegundos
+
+    /**
+     * Tiempo entre updates en milisegundos
+     */
     private static final long MIN_TIEMPO_ENTRE_UPDATES = 1000 * 5 * 1; //1 minuto
     private GoogleMap nMap;
     private ImageView image;
 
+
+    /**
+     * Creamos la vista y establecemos conexión a través de la API de Google
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         dashboardViewModel =
@@ -66,6 +82,9 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
         View root = inflater.inflate(R.layout.fragment_navigation, container, false);
         googleApiClient = new GoogleApiClient.Builder(getContext(), this, this).addApi(LocationServices.API).build();
 
+
+
+        // Establecemos conexión
 
         int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity().getApplicationContext());
 
@@ -79,17 +98,29 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
             dialog.show();
         }
 
+
+        // Especificamos que las imágenes extras sean invisibles por ahora
         image = (ImageView) root.findViewById(R.id.imageNavigation);
         image.setVisibility(View.INVISIBLE);
 
         return root;
     }
 
+    /**
+     * Establecemos el estilo del mapa,
+     * las zonas resaltadas,
+     * click-listener para las zonas,
+     * límites en el mapa (desplazamiento y zoom) y
+     * los intervalos entre las actualizaciones de posición
+     * @param googleMap base del mapa
+     */
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
         nMap = googleMap;
-        //Set style
+
+
+        //Establece el estilo del mapa desde el JSON, creado a través de GoogleStyleWizard
         try {
             boolean success = nMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.map_style));
             if (!success) {
@@ -102,6 +133,8 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
         uiSettings.setZoomControlsEnabled(true);
 
 
+        //Creamos las zonas resaltadas a través de puntos
+
         PolygonOptions recOption = new PolygonOptions()
                 .add(new LatLng(37.1775, -3.5911),
                         new LatLng(37.1774, -3.5901),
@@ -113,11 +146,14 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
                 .strokeWidth(5)
                 .geodesic(true);
 
-
+        // Añadimos al mapa y establecemos como clickeable
 
         Polygon polygon = nMap.addPolygon(recOption);
         polygon.setTag("poligono1");
         polygon.setClickable(true);
+
+
+        // Repetimos el proceso con la segunda zona
 
         PolygonOptions recOption2 = new PolygonOptions()
                 .add(new LatLng(37.1763, -3.5910),
@@ -161,9 +197,13 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
         polygon2.setTag("poligono2");
         polygon2.setClickable(true);
 
+
+        // Creamos el listener para los click de las zonas resaltadas
+
         nMap.setOnPolygonClickListener(new GoogleMap.OnPolygonClickListener() {
             @Override
             public void onPolygonClick(Polygon polygon) {
+                // Dependiendo de la zona resaltada, identificada por su tag, enseñamos la imagen correspondiente o ocultamos la actual si es la misma
                 switch((String)polygon.getTag()){
                     case "poligono1":
                         try {
@@ -196,36 +236,47 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
             }
         });
 
-        //Limits for maps
+
+
+        // Establecemos unos límites en el mapa para que el usuario no se desplace fuera de la Alhambra
+
         LatLng one = new LatLng(37.1783, -3.5924);
         LatLng two = new LatLng(37.1738, -3.5847);
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        //add them to builder
+
+
+        // Añadimos los límites al constructor de límites
         builder.include(one);
         builder.include(two);
 
         LatLngBounds bounds = builder.build();
-        //get width and height to current display screen
+
+
+        // Obtenemos el tamaño de la pantalla
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = getResources().getDisplayMetrics().heightPixels;
 
-        // 20% padding
+        // Añadimos un 20% de márgen
         int padding = (int) (width * 0.20);
 
-        //set latlong bounds
+        // Establecemos limites en el mapa
         nMap.setLatLngBoundsForCameraTarget(bounds);
 
-        //move camera to fill the bound to screen
+        // Movemos la cámara el lugar predeterminado
         nMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding));
 
-        //set zoom to level to current so that you won't be able to zoom out viz. move outside bounds
+        // También establecemos un límite en el zoom para que el usuario no sea capaz de alejarse demasiado
         nMap.setMinZoomPreference(nMap.getCameraPosition().zoom+2);
 
-        LocationManager lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
+
+        // Ahora vamos a establecer las actualizaciones de posición en el mapa
+
+        //  Primero creamos un manager para la localización
+        LocationManager lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        //  Hacemos una petición de actualización con el listener y el intervalo específicado
         lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIEMPO_ENTRE_UPDATES, MIN_CAMBIO_DISTANCIA_PARA_UPDATES, locListener, Looper.getMainLooper());
 
-        @SuppressLint("MissingPermission") Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
     }
 
     @Override
@@ -243,23 +294,40 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
 
     }
 
+    /**
+     * Listener para la localización
+     * Actualiza la posición y el marker que indica donde está el usuario
+     */
+
     public LocationListener locListener = new LocationListener() {
+        /**
+         * Marker con la posición exacta del usuario
+         */
         Marker marker;
+
+        /**
+         * Update de localización. Actulizamos el marker.
+         * @param location nueva posición del usuario
+         */
         public void onLocationChanged(Location location) {
+
+
+            // Si existe un marker anterior lo borramos
             if(marker != null)
                 marker.remove();
-            Log.i(TAG, "Lat " + location.getLatitude() + " Long " + location.getLongitude());
+
+            // Obtenemos nueva posición
             double longitude = location.getLongitude();
             double latitude = location.getLatitude();
+            LatLng new_pos = new LatLng(latitude, longitude);
 
-            //Add a marker in Syndey
-            LatLng sydney = new LatLng(latitude, longitude);
-            //LatLng sydney = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-            //System.out.println(lastLocation.getLatitude());
 
-            marker = nMap.addMarker(new MarkerOptions().position(sydney).title("Soy kraken").icon(BitmapDescriptorFactory.defaultMarker(HUE_VIOLET)));
-            float zoomlevel = nMap.getCameraPosition().zoom;
-            //nMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, zoomlevel));
+            // Añadimos marker en la nueva posición
+            marker = nMap.addMarker(new MarkerOptions().position(new_pos).title("Yo").icon(BitmapDescriptorFactory.defaultMarker(HUE_VIOLET)));
+
+            //Descomentar si queremos que la cámara se mueva con la posición
+                //float zoomlevel = nMap.getCameraPosition().zoom;
+                //nMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, zoomlevel));
         }
 
         public void onProviderDisabled(String provider) {
