@@ -44,6 +44,8 @@ public class BlueprintsActivity extends AppCompatActivity {
         // Variables que contendran informacion sobre la imagen a mostrar
         String fileName, title, information;
 
+
+        // Dependiendo del resultado del lector QR, actualizamos la imágen y la información
         switch(CameraFragment.lecturaQr) {
             case("fuente"):
                 fileName = "fuente.jpg";
@@ -87,7 +89,7 @@ public class BlueprintsActivity extends AppCompatActivity {
                 break;
         }
 
-        // Mostrar la informacion
+        // Mostramos dependiendo de las especificaciones
         this.showImageTextInfo(fileName, title, information);
     }
 }
