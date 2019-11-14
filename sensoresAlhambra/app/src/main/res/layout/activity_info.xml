@@ -11,7 +11,7 @@
         android:layout_height="fill_parent">
 
         <ImageView
-            android:id="@+id/tituloPlano"
+            android:id="@+id/imageInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -20,10 +20,10 @@
             tools:srcCompat="@tools:sample/avatars[1]" />
 
         <TextView
-            android:id="@+id/imagenPlano"
+            android:id="@+id/titleInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tituloPlano"
+            android:layout_below="@id/imageInfo"
             android:layout_marginTop="40px"
             android:text="TextView"
             android:textSize="20sp"
@@ -31,10 +31,10 @@
             android:layout_centerHorizontal="true"/>
 
         <TextView
-            android:id="@+id/plantaPlano"
+            android:id="@+id/floorInfo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/imagenPlano"
+            android:layout_below="@+id/titleInfo"
             android:layout_marginTop="20sp"
             android:layout_marginLeft="10sp"
             android:layout_marginRight="10sp"
@@ -45,7 +45,7 @@
             android:id="@+id/ratingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/plantaPlano"
+            android:layout_below="@+id/floorInfo"
             android:layout_gravity="center"
             android:layout_marginTop="50px" />
 
