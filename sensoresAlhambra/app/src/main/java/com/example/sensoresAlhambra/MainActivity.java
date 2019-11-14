@@ -24,11 +24,20 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 
+/**
+ * Actividad principal
+ * Pedimos permisos y lanzamos la actividad de comienzo deseada
+ */
+
 public class MainActivity extends AppCompatActivity{
 
+
     private AppBarConfiguration mAppBarConfiguration;
-    private static final int CAMERA_PERMISSION_CAMERA = 0x000000;
-    private static final int LOCATION_PERMISSION_LOCATION = 0x000001;
+    /**
+     * Código de permiso, usado cuando se llama a la función onRequestPermissionsResult
+     * en este contexto no tiene importancia
+     */
+    private static final int PERMISSION = 0x000000;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,26 +47,25 @@ public class MainActivity extends AppCompatActivity{
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
 
+
+
+        //Comprobamos permisos de localización y cámara, si no se tiene, se envia una petición al usuario para que los conceda
+
+        // Comprobamos permisos de localización
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-                //activateCameraReader();
-            } else {
-                ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA},
-                        LOCATION_PERMISSION_LOCATION);
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA}, PERMISSION);
             }
         }
-
+        // Comprobamos permisos de cámara
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.CAMERA)) {
-                //activateCameraReader();
-            } else {
-                ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA},
-                        LOCATION_PERMISSION_LOCATION);
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.CAMERA)) {
+                ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA}, PERMISSION);
             }
         }
 
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+
+        // Constructor de la barra de navegación
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_viewar, R.id.nav_camera, R.id.nav_navigation, R.id.nav_exit)
                 .setDrawerLayout(drawer)
