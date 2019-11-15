@@ -107,36 +107,36 @@ VR con una imagen 3D del Patio de los Arrayanes y un lector de código QR. La id
 la cámara de las gafas. Por otro lado, llevaremos el \textit{smartphone} en la mano para controlar el contenido mostrado en las gafas, y
 además, mostrará una maqueta de la Alhambra que nos servirá como mapa.
 
-\subsection{VR}
+\subsection{Descripción del visor VR}
 \label{sec:vr}
 
 Por defecto, la aplicación lanza el \textbf{MainActivity} [\ref{sec:main}], inicializando la aplicación y mostrando el \textbf{ViewARFragment}
-(nuestro visor VR). El visor muestra una imagen de 360º, en la cual, cuando estemos mirando una estructura en concreto
+[\ref{sec:view}] (nuestro visor VR). El visor muestra una imagen de 360º, en la cual, cuando estemos mirando una estructura en concreto
 (ya sea un edificio, puertas, columnas, jarrones, etc.), se nos marcará indicando que podremos interaccionar con ella.
-Si movemos ligeramente el móvil hacia abajo cuando una de ellas esté resaltada, iniciamos la \textbf{InfoActivity},
-que es una pequeña página que muestra información extra sobre la estructura, como si fuese una enciclopedia. En nuestra
-aplicación esto puede suponer un problema, ya que el visor lo tenemos en el móvil y al realizar el movimiento
-podemos deseleccionar lo que teníamos resaltado; sin embargo, como esto estaría integrado en las gafas, cuando movamos el móvil, las gafas
-(que es donde vemos el objeto) no se verán afectadas.
+Si movemos ligeramente el móvil hacia abajo cuando una de ellas esté resaltada, iniciamos la \textbf{InfoActivity} [\ref{sec:info}],
+que es una pequeña página que muestra información extra sobre la estructura, como si fuese una enciclopedia. En nuestra aplicación esto
+puede suponer un problema, ya que el visor lo tenemos en el móvil y al realizar el movimiento podemos deseleccionar lo que teníamos
+resaltado; sin embargo, como esto estaría integrado en las gafas, cuando movamos el móvil, las gafas (que es donde vemos el objeto) no
+se verán afectadas.
 
 Una vez en el \textbf{InfoActivity}, para volver al visor VR, realizaremos un movimiento horizontal con nuestro dispositivo.
 En nuestra aplicación, todo esto aparece en el dispositivo, pero en la versión definitiva, toda la información se mostraría en
 las gafas.
 
-\subsection{QR}
+\subsection{Descripción del lector QR}
 
-En el menú desplegable, también tenemos la opción de \textit{Camera}, que nos lleva al \textbf{CameraFragment}. Este implementa el
-lector de códigos QR, el cuál nos servirá a la hora de entrar a un edificio. Habrá códigos QR en cada uno y se obtendrá un plano
-del edificio ya que las señales GPS pueden fallar o simplemente que el edificio tenga varias plantas y necesitemos ubicarnos mejor.
-Cuando leemos un código se nos iniciará un \textbf{BlueprintsActivity}, que muestra la información anterior. Al igual que antes,
-para volver a la cámara, realizaremos un movimiento horizontal con nuestro dispositivo.
+En el menú desplegable, también tenemos la opción de \textit{Camera}, que nos lleva al \textbf{CameraFragment} [\ref{sec:camera}]. Este
+implementa el lector de códigos QR, el cuál nos servirá a la hora de entrar a un edificio. Habrá códigos QR en cada uno y se obtendrá un
+plano del edificio ya que las señales GPS pueden fallar o simplemente que el edificio tenga varias plantas y necesitemos ubicarnos mejor.
+Cuando leemos un código se nos iniciará un \textbf{BlueprintsActivity}, que muestra la información anterior. Al igual que antes, para
+volver a la cámara, realizaremos un movimiento horizontal con nuestro dispositivo.
 
-\subsection{Mapa}
+\subsection{Descripción del mapa}
 \label{sec:mapa}
 
-Por último, en el menú desplegable tenemos un apartado llamado \textit{Navigation}, el cual inicia el \textbf{NavigationFragment} que nos muestra un maquetado 3D
-de toda la Alhambra con regiones clickables señaladas para saber en que lugar nos encontramos o si queremos ir a algún otro lugar. Esta parte
-será la única que se vea en el smartphone. Tendremos implementados en él, el siguiente multitouch:
+Por último, en el menú desplegable tenemos un apartado llamado \textit{Navigation}, el cual inicia el \textbf{NavigationFragment} [\ref{sec:nav}]
+quecnos muestra un maquetado 3D de toda la Alhambra con regiones clickables señaladas para saber en que lugar nos encontramos o si queremos
+ir a algún otro lugar. Esta parte será la única que se vea en el smartphone. Tendremos implementados en él, el siguiente multitouch:
 
 \begin{itemize}
     \item \textbf{Click simple}. Servirá para seleccionar y deseleccionar las regiones clickables.
@@ -147,8 +147,8 @@ será la única que se vea en el smartphone. Tendremos implementados en él, el 
     \item \textbf{Click con dos dedos y rotación}. Estando en el modo 3D, esto nos servirá para rotar la vista alrededor de la maqueta.
 \end{itemize}
 
-Como podemos ver, utilizamos bastantes sensores multitouch, pero no hay ninguno que requiera del acelerómetro, giroscopio..., por lo que no tendremos
-colisiones entre éste y los mencionados anteriormente.
+Como podemos ver, utilizamos bastantes sensores multitouch, pero no hay ninguno que requiera del acelerómetro, giroscopio..., por lo
+que no tendremos colisiones entre éste y los mencionados anteriormente.
 
 \section{E X I T}
 LA P*** MEJOR IMPLEMENTACION DE LA HISTORIA. EL MEJOR BOTON QUE NOS PERMITIRA SALIR DE LA MARAVILLOSA APPPPP
@@ -225,6 +225,12 @@ a los \textit{fragments} y de solicitar los permisos de cámara y localización 
 la aplicación.
 
 \subsubsection{Atributos}
+
+Los atributos que tiene esta clase son los siguientes:
+
+\begin{itemize}
+    \item 
+\end{itemize}
 
 \subsubsection{Métodos}
 
