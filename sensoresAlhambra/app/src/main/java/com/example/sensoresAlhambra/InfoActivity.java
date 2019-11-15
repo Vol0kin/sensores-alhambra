@@ -117,7 +117,7 @@ public class InfoActivity extends AppCompatActivity implements SensorEventListen
 
                 // Si la velocidad supera el umbral, realiza la acción
                 if (speed > SHAKE_THRESHOLD) {
-                    onBackPressed();
+                    finish();
                 }
 
                 // Actualiza los valores del sensor
