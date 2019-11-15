@@ -12,12 +12,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.example.sensoresAlhambra.InfoActivity;
 import com.example.sensoresAlhambra.R;
@@ -27,11 +24,20 @@ import com.google.vr.sdk.widgets.pano.VrPanoramaView;
 import java.io.InputStream;
 
 public class ViewARFragment extends Fragment implements SensorEventListener{
+    /**
+     * Imagen a mostrar en cada momento
+     */
     public static String imagen = "image.jpg";
+
+    /**
+     * VR asociado a la imagen correspondiente
+     */
     private VrPanoramaView mVRPanoramaView;
+
+    /**
+     * Gestor de sensores
+     */
     private SensorManager sensorManager;
-    public boolean loadImageSuccessful;
-    private ImageButton buttonPanoView;
 
 
     /**
@@ -39,9 +45,25 @@ public class ViewARFragment extends Fragment implements SensorEventListener{
      */
     private float[] mHeadRotation = new float[2];
 
+    /**
+     * Último momento en el que se ha actualizado el sensor
+     */
     private long lastUpdate = 0;
-    private float last_x, last_y, last_z;
+
+    /**
+     * Último valor de Y registrado
+     */
+    private float last_y;
+
+    /**
+     * Umbral del acelerómetro
+     */
     private static final int SHAKE_THRESHOLD = 200;
+
+    /**
+     * Umbral de tiempo entre actualizaciones
+     */
+    private static final long UPDATE_TIME_THRESHOLD = 250;
 
 
     /**
@@ -59,16 +81,12 @@ public class ViewARFragment extends Fragment implements SensorEventListener{
         // Cargamos los sensores
         sensorManager = (SensorManager)getActivity().getSystemService(Context.SENSOR_SERVICE);
 
-        // Cargamos la foto elegida
-        loadPhotoSphere("image.jpg");
+        // Cargamos la foto inicial
+        loadPhotoSphere(imagen);
 
         // Creamos un listener
-        mVRPanoramaView.setEventListener(new ActivityEventListener());
+        mVRPanoramaView.setEventListener(new VrPanoramaEventListener ());
         mVRPanoramaView.getHeadRotation(mHeadRotation);
-
-        // Creamos botón
-        buttonPanoView = root.findViewById(R.id.botonPanoView);
-        buttonPanoView.setVisibility(View.INVISIBLE);
 
         return root;
     }
@@ -94,11 +112,6 @@ public class ViewARFragment extends Fragment implements SensorEventListener{
         Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         if (accelerometer != null) {
             sensorManager.registerListener((SensorEventListener) this, accelerometer,
-                    SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI);
-        }
-        Sensor magneticField = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-        if (magneticField != null) {
-            sensorManager.registerListener((SensorEventListener) this, magneticField,
                     SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI);
         }
     }
@@ -143,14 +156,13 @@ public class ViewARFragment extends Fragment implements SensorEventListener{
         Sensor mySensor = sensorEvent.sensor;
 
         if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            float x = sensorEvent.values[0];
             float y = sensorEvent.values[1];
-            float z = sensorEvent.values[2];
 
             long curTime = System.currentTimeMillis();
 
-            // Chequea cada cuanto actualizamos las imagenes
-            if ((curTime - lastUpdate) > 250) {
+            // La próxima señal que se leerá será una con 250 milisegundos de diferencia
+            if ((curTime - lastUpdate) > UPDATE_TIME_THRESHOLD) {
+                // Actualiza el tiempo de la última llegada
                 long diffTime = (curTime - lastUpdate);
                 lastUpdate = curTime;
 
@@ -162,9 +174,8 @@ public class ViewARFragment extends Fragment implements SensorEventListener{
                     startActivity(intent);
                 }
 
-                last_x = x;
+                // Actualiza último registro del eje Y
                 last_y = y;
-                last_z = z;
             }
         }
 
@@ -184,48 +195,20 @@ public class ViewARFragment extends Fragment implements SensorEventListener{
         if(mHeadRotation[1] > -60 && mHeadRotation[1] < -20 && mHeadRotation[0] > -20 && mHeadRotation[0] < 20){
             if (!imagen.equals("image2.jpg")) {
                 imagen = "image2.jpg";
-                loadPhotoSphere("image2.jpg");
+                loadPhotoSphere(imagen);
             }
         }
         else if(mHeadRotation[1] > 0 && mHeadRotation[1] < 30 && mHeadRotation[0] > -20 && mHeadRotation[0] < 20){
             if (!imagen.equals("image3.jpg")) {
                 imagen = "image3.jpg";
-                loadPhotoSphere("image3.jpg");
+                loadPhotoSphere(imagen);
             }
         }
         else{
             if (!imagen.equals("image.jpg")) {
                 imagen = "image.jpg";
-                loadPhotoSphere("image.jpg");
+                loadPhotoSphere(imagen);
             }
         }
     }
-
-    /**
-     * Listener del visor
-     */
-    private class ActivityEventListener extends VrPanoramaEventListener {
-        /**
-         * Esta función es llamada luego de cargar la imagen
-         */
-        @Override
-        public void onLoadSuccess() {
-            loadImageSuccessful = true;
-        }
-
-        /**
-         * Es llamada si existe un error asíncrono (normalmente al cargar)
-         */
-        @Override
-        public void onLoadError(String errorMessage) {
-            loadImageSuccessful = false;
-            Toast toast1 =
-                    Toast.makeText(getContext(), "Error al cargar la imagen", Toast.LENGTH_SHORT);
-            toast1.show();
-        }
-    }
-
-
-
-
 }

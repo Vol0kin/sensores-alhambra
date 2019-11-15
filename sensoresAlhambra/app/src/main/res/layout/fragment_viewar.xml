@@ -16,16 +16,6 @@
 
     </com.google.vr.sdk.widgets.pano.VrPanoramaView>
 
-    <ImageButton
-        android:id="@+id/botonPanoView"
-        android:layout_width="198dp"
-        android:layout_height="192dp"
-        android:background="@drawable/common_full_open_on_phone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/vrPanoramaView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

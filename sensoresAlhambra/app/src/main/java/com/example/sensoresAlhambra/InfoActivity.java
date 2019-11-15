@@ -46,14 +46,19 @@ public class InfoActivity extends AppCompatActivity implements SensorEventListen
     private long lastUpdate = 0;
 
     /**
-     * Últimos valores X, Y, Z registrados
+     * Último valor de X registrado
      */
-    private float last_x, last_y, last_z;
+    private float last_x;
 
     /**
      * Umbral del acelerómetro
      */
     private static final int SHAKE_THRESHOLD = 200;
+
+    /**
+     * Umbral de tiempo entre actualizaciones
+     */
+    private static final long UPDATE_TIME_THRESHOLD = 200;
 
 
     /**
@@ -64,17 +69,14 @@ public class InfoActivity extends AppCompatActivity implements SensorEventListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Declaración de variables
+        // Obtener gestor de sensores y acelerómetro
         setContentView(R.layout.activity_info);
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         senAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_NORMAL);
 
-
-
         // Obtenemos la imagen cargada en el ViewARFragment y dependiendo de cual sea
         // asignamos una información u otra a los objetos
-
         if (ViewARFragment.imagen.equals("image2.jpg")){
             // Cargar y seleccionar la imagen
             imageView = (ImageView) findViewById(R.id.imageInfo);
@@ -124,17 +126,15 @@ public class InfoActivity extends AppCompatActivity implements SensorEventListen
 
         // Comprueba si el sensor es el acelerómetro
         if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            // En caso afirmativo, guarda los valores que recibe
+            // En caso afirmativo, guarda los valores del eje X que recibe
             float x = sensorEvent.values[0];
-            float y = sensorEvent.values[1];
-            float z = sensorEvent.values[2];
 
             // Guarda la hora del sistema actual n milisegundos
             long curTime = System.currentTimeMillis();
 
 
             // La próxima señal que se leerá será una con 200 milisegundos de diferencia
-            if ((curTime - lastUpdate) > 200) {
+            if ((curTime - lastUpdate) > UPDATE_TIME_THRESHOLD) {
                 // Actualiza el tiempo de la última llegada
                 long diffTime = (curTime - lastUpdate);
                 lastUpdate = curTime;
@@ -148,10 +148,8 @@ public class InfoActivity extends AppCompatActivity implements SensorEventListen
                     finish();
                 }
 
-                // Actualiza los valores del sensor
+                // Actualiza el último valor registrado
                 last_x = x;
-                last_y = y;
-                last_z = z;
             }
         }
     }
@@ -178,15 +176,9 @@ public class InfoActivity extends AppCompatActivity implements SensorEventListen
          * Volvemos a registrar los listener para tener sensores para el visor.
          * Establecemos el intervalo entre actualizaciones.
          */
-
         Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         if (accelerometer != null) {
             sensorManager.registerListener((SensorEventListener) this, accelerometer,
-                    SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI);
-        }
-        Sensor magneticField = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-        if (magneticField != null) {
-            sensorManager.registerListener((SensorEventListener) this, magneticField,
                     SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI);
         }
     }

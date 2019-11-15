@@ -27,12 +27,28 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 import java.io.IOException;
 
 
-
-// Fragmento de cámara (source: GoogleGlass o similar)
+/**
+ * Fragmento de cámara (source: GoogleGlass o similar)
+ */
 public class CameraFragment extends Fragment {
+    /**
+     * Superficie que se pondrá sobre la vista
+     */
     SurfaceView surfaceView;
+
+    /**
+     * Source de la cámara
+     */
     CameraSource cameraSource;
+
+    /**
+     * Detector de códigos QR
+     */
     BarcodeDetector barcodeDetector;
+
+    /**
+     * Variable que contiene la lectura de un QR en formato String
+     */
     public static String lecturaQr;
 
 
@@ -54,18 +70,27 @@ public class CameraFragment extends Fragment {
         return root;
     }
 
+    /**
+     * Método llamado cuando se pausa la actividad. Activa el lector de la cámara
+     */
     @Override
     public void onPause() {
         super.onPause();
         activateCameraReader();
     }
 
+    /**
+     * Método llamado cuando se reanuda la actividad. Activa la cámara
+     */
     @Override
     public void onResume() {
         super.onResume();
         activateCameraReader();
     }
 
+    /**
+     * Método llamado cuando se destruye la actividad
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -73,18 +98,19 @@ public class CameraFragment extends Fragment {
 
 
     /**
-     *     Activamos el lector de QR en cámara
-     *     Simula reconozimiento de objetos en tiempo real
+     * Activamos el lector de QR en cámara
+     * Simula reconozimiento de objetos en tiempo real
      */
-
     public void activateCameraReader(){
-
+        // Establecer detector de QR
         barcodeDetector = new BarcodeDetector.Builder(getContext())
                 .setBarcodeFormats(Barcode.QR_CODE).build();
-        cameraSource= new CameraSource.Builder(getContext(), barcodeDetector)
+
+        // Establecer fuente de la cámara
+        cameraSource = new CameraSource.Builder(getContext(), barcodeDetector)
                 .setAutoFocusEnabled(true).build();
 
-
+        // EStablecer superficie
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
@@ -110,50 +136,49 @@ public class CameraFragment extends Fragment {
             }
         });
 
+        // Establecer acciones del lector de QR
         barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
             @Override
-            /**
-             *
-             */
-            public void release() {
-
-            }
-
-
-
+            public void release() { }
 
             /**
              *
-             *Función activada cada vez que recibe un código QR
-             *  El código QR entrará en cola y se irán analizando uno a uno
-             *  Luego de leer el código QR paramos la cámara para que no vuelva a entrar el mismo muchas veces en la cola
-             *  Lanzamos la aplicación con la información y la valoración para el usuario
-             *  Limpiamos la cola de QR por si existen copias del mismo QR
+             * Método activado cada vez que recibe un código QR
+             * El código QR entrará en cola y se irán analizando uno a uno
+             * Luego de leer el código QR paramos la cámara para que no vuelva a entrar el mismo muchas veces en la cola
+             * Lanzamos la aplicación con la información y la valoración para el usuario
+             * Limpiamos la cola de QR por si existen copias del mismo QR
              * @param detections Cola de QRs
              */
             @Override
             public void receiveDetections(Detector.Detections<Barcode> detections) {
+                // Lectura de elementos detectados
                 final SparseArray<Barcode> qrCodes = detections.getDetectedItems();
 
-                if(qrCodes.size() ==1) {
+                // Si se ha deteactado algo, procesar
+                if(qrCodes.size() == 1) {
                     surfaceView.post(new Runnable() {
                         @Override
                         public void run() {
-                        Vibrator vibrator = (Vibrator) getActivity().getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-                        vibrator.vibrate(50);
-                        cameraSource.stop(); // ADD THIS. THIS WILL STOP CAMERA
+                            // Establecer vibración de 50 ms
+                            Vibrator vibrator = (Vibrator) getActivity().getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+                            vibrator.vibrate(50);
 
-                        lecturaQr = qrCodes.valueAt(0).displayValue;
-                        Intent intent = new Intent(getContext(), BlueprintsActivity.class);
-                        startActivity(intent);
-                        qrCodes.clear();
+                            // Parar lectura de códigos
+                            cameraSource.stop(); // ADD THIS. THIS WILL STOP CAMERA
+
+                            // Obtener valor leído
+                            lecturaQr = qrCodes.valueAt(0).displayValue;
+
+                            // Lanzar BlueprintsActivity
+                            Intent intent = new Intent(getContext(), BlueprintsActivity.class);
+                            startActivity(intent);
+
+                            // Limpiar todos los códigos QR leídos
+                            qrCodes.clear();
                         }
-
                     });
-
-
                 }
-
             }
         });
     }

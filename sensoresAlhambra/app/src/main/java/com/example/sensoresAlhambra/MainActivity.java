@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity{
     /**
      * Método que inicializa la barra de navegacion y solicita los permisos
      * necesarios
-     * @param savedInstanceState Información guardada anteriormente
+     * @param savedInstanceState
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +102,8 @@ public class MainActivity extends AppCompatActivity{
     }
 
     /**
-     * Método llamado cuando se despliega la barra
+     * Método llamado cuando se despliega la barra. Muestra los elementos
+     * de la barra
      * @return True si se ha desplegado correctamente, false en caso contrario
      */
     @Override

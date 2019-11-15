@@ -22,7 +22,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.example.sensoresAlhambra.R;
 import com.google.android.gms.common.ConnectionResult;
@@ -48,21 +47,35 @@ import java.io.IOException;
 import static android.content.ContentValues.TAG;
 import static com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_VIOLET;
 
+/**
+ * Fragment que representa el mapa de navegaciónla opción de salir de la aplicación
+ */
 public class NavigationFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
-
+    /**
+     * API del cliente de Google
+     */
     private GoogleApiClient googleApiClient;
 
     /**
-     * Distancia entre updates en metros
+     * Distancia entre updates en metros (10 metros)
      */
-    private static final long MIN_CAMBIO_DISTANCIA_PARA_UPDATES = 10; // 10 metros
+    private static final long MIN_CAMBIO_DISTANCIA_PARA_UPDATES = 10;
 
     /**
-     * Tiempo entre updates en milisegundos
+     * Tiempo entre updates en milisegundos (5 segundos)
      */
-    private static final long MIN_TIEMPO_ENTRE_UPDATES = 1000 * 5 * 1; //1 minuto
+    private static final long MIN_TIEMPO_ENTRE_UPDATES = 1000 * 5;
+
+    /**
+     * Mapa de Google que se mostrará y sobre el que se crearán las zonas
+     * destacadas y la posición del dispositivo
+     */
     private GoogleMap nMap;
+
+    /**
+     * Vista que se mostrará al pulsar sobre una zona destacada
+     */
     private ImageView image;
 
 
@@ -78,11 +91,9 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
         View root = inflater.inflate(R.layout.fragment_navigation, container, false);
         googleApiClient = new GoogleApiClient.Builder(getContext(), this, this).addApi(LocationServices.API).build();
 
-
-
         // Establecemos conexión
-
         int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity().getApplicationContext());
+
 
         if (status == ConnectionResult.SUCCESS) {
 
@@ -143,7 +154,6 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
                 .geodesic(true);
 
         // Añadimos al mapa y establecemos como clickeable
-
         Polygon polygon = nMap.addPolygon(recOption);
         polygon.setTag("poligono1");
         polygon.setClickable(true);
@@ -187,8 +197,7 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
                 .strokeWidth(5)
                 .geodesic(true);
 
-
-
+        // Añadimos al mapa y establecemos como clickeable
         Polygon polygon2 = nMap.addPolygon(recOption2);
         polygon2.setTag("poligono2");
         polygon2.setClickable(true);
@@ -233,9 +242,7 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
         });
 
 
-
         // Establecemos unos límites en el mapa para que el usuario no se desplace fuera de la Alhambra
-
         LatLng one = new LatLng(37.1783, -3.5924);
         LatLng two = new LatLng(37.1738, -3.5847);
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
@@ -246,7 +253,6 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
         builder.include(two);
 
         LatLngBounds bounds = builder.build();
-
 
         // Obtenemos el tamaño de la pantalla
         int width = getResources().getDisplayMetrics().widthPixels;
@@ -265,36 +271,40 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
         nMap.setMinZoomPreference(nMap.getCameraPosition().zoom+2);
 
 
-
         // Ahora vamos a establecer las actualizaciones de posición en el mapa
 
         //  Primero creamos un manager para la localización
         LocationManager lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
         //  Hacemos una petición de actualización con el listener y el intervalo específicado
         lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIEMPO_ENTRE_UPDATES, MIN_CAMBIO_DISTANCIA_PARA_UPDATES, locListener, Looper.getMainLooper());
-
     }
 
+    /**
+     * Método que se ejecuta cuando se realiza una conexión a la API de Google
+     * @param bundle
+     */
     @Override
-    public void onConnected(@Nullable Bundle bundle) {
+    public void onConnected(@Nullable Bundle bundle) { }
 
-    }
-
+    /**
+     * Método que se ejecuta cuando se suspende la conexión a la API de Google
+     * @param i
+     */
     @Override
-    public void onConnectionSuspended(int i) {
+    public void onConnectionSuspended(int i) { }
 
-    }
-
+    /**
+     * Método que se ejecuta cuando no se puede establecer conexión con la API de Google
+     * @param connectionResult
+     */
     @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) { }
 
     /**
      * Listener para la localización
      * Actualiza la posición y el marker que indica donde está el usuario
      */
-
     public LocationListener locListener = new LocationListener() {
         /**
          * Marker con la posición exacta del usuario
@@ -338,6 +348,4 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
             Log.i(TAG, "onStatusChanged()");
         }
     };
-
-
 }
