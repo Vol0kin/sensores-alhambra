@@ -2,8 +2,13 @@ package com.example.sensoresAlhambra;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -15,12 +20,20 @@ import com.example.sensoresAlhambra.ui.camera.CameraFragment;
 
 import java.io.IOException;
 
-public class BlueprintsActivity extends AppCompatActivity {
+public class BlueprintsActivity extends AppCompatActivity implements SensorEventListener {
     TextView tituloPlano, plantaPlano;
     ImageView imagenPlano;
     private ScaleGestureDetector mScaleGestureDetector;
     private float mScale = 1f;
     private Matrix mMatrix = new Matrix();
+
+    private SensorManager sensorManager;
+    private Sensor senAccelerometer;
+
+    private long lastUpdate = 0;
+    private float last_x, last_y, last_z;
+    // Umbral del acelerómetro
+    private static final int SHAKE_THRESHOLD = 200;
 
 
     @Override
@@ -78,6 +91,9 @@ public class BlueprintsActivity extends AppCompatActivity {
         this.showImageTextInfo(fileName, title, information);
 
         mScaleGestureDetector = new ScaleGestureDetector(getApplicationContext(), new ScaleListener());
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        senAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_NORMAL);
     }
 
 
@@ -118,5 +134,58 @@ public class BlueprintsActivity extends AppCompatActivity {
             imagenPlano.setImageMatrix(mMatrix);
             return true;
         }
+    }
+
+    /**
+     * Función que actua cuando un sensor se actualiza
+     * @param sensorEvent: Sensor actualizado
+     */
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        Sensor mySensor = sensorEvent.sensor;
+
+        // Comprueba si el sensor es el acelerómetro
+        if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            // En caso afirmativo, guarda los valores que recibe
+            float x = sensorEvent.values[0];
+            float y = sensorEvent.values[1];
+            float z = sensorEvent.values[2];
+
+            // Guarda la hora del sistema actual n milisegundos
+            long curTime = System.currentTimeMillis();
+
+
+            // La próxima señal que se leerá será una con 200 milisegundos de diferencia
+            if ((curTime - lastUpdate) > 200) {
+                // Actualiza el tiempo de la última llegada
+                long diffTime = (curTime - lastUpdate);
+                lastUpdate = curTime;
+
+                // Calcula la velocidad en el eje x teniendo en cuenta la diferencia de tiempos
+                float speed = Math.abs(x - last_x )/ diffTime * 10000;
+
+
+                // Si la velocidad supera el umbral, realiza la acción
+                if (speed > SHAKE_THRESHOLD) {
+                    finish();
+
+                }
+
+                // Actualiza los valores del sensor
+                last_x = x;
+                last_y = y;
+                last_z = z;
+            }
+        }
+    }
+
+    /**
+     * Acciones realizadas si se cambiase la precisión de un sensor
+     * @param sensor
+     * @param accuracy
+     */
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        // En caso de que la precisión cambie
     }
 }

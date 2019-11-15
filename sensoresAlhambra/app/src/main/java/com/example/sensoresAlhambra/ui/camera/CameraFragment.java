@@ -57,6 +57,7 @@ public class CameraFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        activateCameraReader();
     }
 
     @Override
@@ -134,8 +135,7 @@ public class CameraFragment extends Fragment {
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> qrCodes = detections.getDetectedItems();
 
-
-                if(qrCodes.size() >= 1) {
+                if(qrCodes.size() ==1) {
                     surfaceView.post(new Runnable() {
                         @Override
                         public void run() {
@@ -143,7 +143,7 @@ public class CameraFragment extends Fragment {
                         vibrator.vibrate(50);
                         cameraSource.stop(); // ADD THIS. THIS WILL STOP CAMERA
 
-                        lecturaQr = qrCodes.valueAt(qrCodes.size() - 1).displayValue;
+                        lecturaQr = qrCodes.valueAt(0).displayValue;
                         Intent intent = new Intent(getContext(), BlueprintsActivity.class);
                         startActivity(intent);
                         qrCodes.clear();
