@@ -14,17 +14,45 @@ import com.example.sensoresAlhambra.ui.viewAR.ViewARFragment;
 import java.io.IOException;
 
 
-
+/**
+ * Clase que muestra informacion con un titulo, una imagen, y un texto, sobre una
+ * region destacada del VR
+ */
 public class InfoActivity extends AppCompatActivity implements SensorEventListener {
-
+    /**
+     * Texto y título a mostrar
+     */
     TextView textInfo, tituloInfo;
+
+    /**
+     * Imagen a mostrar
+     */
     ImageView imageView;
+
+    /**
+     * Gestor de sensores. Utilizado para acceder a ellos y gestionar
+     * si se registran o no nuevos valores valores
+     */
     private SensorManager sensorManager;
+
+    /**
+     * Acelerómetro
+     */
     private Sensor senAccelerometer;
 
+    /**
+     * Tiempo de la última actualización del acelerómetro
+     */
     private long lastUpdate = 0;
+
+    /**
+     * Últimos valores X, Y, Z registrados
+     */
     private float last_x, last_y, last_z;
-    // Umbral del acelerómetro
+
+    /**
+     * Umbral del acelerómetro
+     */
     private static final int SHAKE_THRESHOLD = 200;
 
 
@@ -87,7 +115,7 @@ public class InfoActivity extends AppCompatActivity implements SensorEventListen
 
 
     /**
-     * Función que actua cuando un sensor se actualiza
+     * Método que actua cuando un sensor se actualiza
      * @param sensorEvent: Sensor actualizado
      */
     @Override

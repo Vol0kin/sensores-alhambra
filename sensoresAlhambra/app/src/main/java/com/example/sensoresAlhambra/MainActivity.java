@@ -35,14 +35,14 @@ public class MainActivity extends AppCompatActivity{
     private static final int PERMISSION_ALL = 1;
 
     /**
-     * Array con los permisos a pedir (localizacion y camara)
+     * Array con los permisos a pedir (localización y cámara)
      */
     private static final String[] PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION,
                                                  Manifest.permission.CAMERA};
 
     /**
-     * Metodo que comprueba si se tienen los permisos necesarios para poder ejecutar
-     * la aplicacion
+     * Método que comprueba si se tienen los permisos necesarios para poder ejecutar
+     * la aplicación
      * @return True si se tienen todos los permisos, false en caso contrario
      */
     private boolean hasPermisions() {
@@ -61,9 +61,9 @@ public class MainActivity extends AppCompatActivity{
     }
 
     /**
-     * Metodo que inicializa la barra de navegacion y solicita los permisos
+     * Método que inicializa la barra de navegacion y solicita los permisos
      * necesarios
-     * @param savedInstanceState Informacion guardada anteriormente
+     * @param savedInstanceState Información guardada anteriormente
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,15 +85,15 @@ public class MainActivity extends AppCompatActivity{
                 .setDrawerLayout(drawer)
                 .build();
 
-        // Establecer barra de navegacion
+        // Establecer barra de navegación
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
     }
 
     /**
-     * Override del metodo de la superclase, llamado cuando se crea el menu
-     * @param menu Menu con el que hacer operaciones
+     * Método llamado al crear el menú
+     * @param menu Menú con el que hacer operaciones
      * @return Devuelve siempre true
      */
     @Override
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     /**
-     * Metodo llamado cuando se despliega la barra
+     * Método llamado cuando se despliega la barra
      * @return True si se ha desplegado correctamente, false en caso contrario
      */
     @Override
