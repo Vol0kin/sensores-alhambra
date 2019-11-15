@@ -3,41 +3,71 @@ package com.example.sensoresAlhambra;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.Menu;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.sensoresAlhambra.ui.viewAR.ViewARFragment;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.drawerlayout.widget.DrawerLayout;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import android.view.Menu;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Actividad principal
- * Pedimos permisos y lanzamos la actividad de comienzo deseada
+ * Se piden permisos y se lanza la actividad de comienzo deseada (en este caso ViewAR)
  */
-
 public class MainActivity extends AppCompatActivity{
 
-
-    private AppBarConfiguration mAppBarConfiguration;
     /**
-     * Código de permiso, usado cuando se llama a la función onRequestPermissionsResult
-     * en este contexto no tiene importancia
+     * Variable que contiene la barra de navegación
      */
-    private static final int PERMISSION = 0x000000;
+    private AppBarConfiguration mAppBarConfiguration;
+
+    /**
+     * Código de permiso usado cuando se piden los permisos
+     * Su valor da igual, pero tiene que ser >= 0
+     */
+    private static final int PERMISSION_ALL = 1;
+
+    /**
+     * Array con los permisos a pedir (localizacion y camara)
+     */
+    private static final String[] PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION,
+                                                 Manifest.permission.CAMERA};
+
+    /**
+     * Metodo que comprueba si se tienen los permisos necesarios para poder ejecutar
+     * la aplicacion
+     * @return True si se tienen todos los permisos, false en caso contrario
+     */
+    private boolean hasPermisions() {
+        // Establecer valor de salida inicial
+        boolean hasPermisions = true;
+
+        // Comprobar cada uno de los permisos
+        for (String permission: Arrays.asList(MainActivity.PERMISSIONS)) {
+            // Si alguno de ellos no se tiene, se pone la variable a false
+            if (ContextCompat.checkSelfPermission(getApplicationContext(), permission)  != PackageManager.PERMISSION_GRANTED) {
+                hasPermisions = false;
+            }
+        }
+
+        return hasPermisions;
+    }
+
+    /**
+     * Metodo que inicializa la barra de navegacion y solicita los permisos
+     * necesarios
+     * @param savedInstanceState Informacion guardada anteriormente
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,23 +77,10 @@ public class MainActivity extends AppCompatActivity{
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
 
-
-
-        //Comprobamos permisos de localización y cámara, si no se tiene, se envia una petición al usuario para que los conceda
-
-        // Comprobamos permisos de localización
-        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (!ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-                ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA}, PERMISSION);
-            }
+        // Comprobar permisos y pedirlos en caso de ser necesario
+        if (!hasPermisions()) {
+            ActivityCompat.requestPermissions(this, MainActivity.PERMISSIONS, MainActivity.PERMISSION_ALL);
         }
-        // Comprobamos permisos de cámara
-        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            if (!ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.CAMERA)) {
-                ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA}, PERMISSION);
-            }
-        }
-
 
         // Constructor de la barra de navegación
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -71,18 +88,26 @@ public class MainActivity extends AppCompatActivity{
                 .setDrawerLayout(drawer)
                 .build();
 
+        // Establecer barra de navegacion
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
     }
 
+    /**
+     * Override del metodo de la superclase, llamado cuando se crea el menu
+     * @param menu Menu con el que hacer operaciones
+     * @return Devuelve siempre true
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
+    /**
+     * Metodo llamado cuando se despliega la barra
+     * @return True si se ha desplegado correctamente, false en caso contrario
+     */
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
