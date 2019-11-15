@@ -90,6 +90,38 @@
 
 \setlength{\parskip}{1em}
 
+
+\section{Introducción}
+En este proyecto vamos a explicar nuestra \textit{Natural User Interface (NUI)} que hará que nuestra visita a la Alhambra sea más
+dinámica y productiva. El proyecto constaría de varios dispositivos, como pueden ser principalmente unas gafas de realidad aumentada,
+un dispositivo Intel Real Sense y un micrófono integrados en las gafas, y un smartphone que utilizaremos tanto para manejar el sistema
+gracias a los múltiples sensores que incorporan, como controlador de la aplicación.
+
+En esta primera versión del proyecto vamos a encargarnos de la interfaz por sensores, es decir, dejaremos a un lado el Intel Real Sense
+y el controlador por voz. Vamos a encargarnos de la realidad aumentada y el resto de sensores para manejar el sistema.
+
+Como no disponemos de unas gafas con estas características, simularemos su funcionamiento en la propia aplicación, utilizando un visor
+VR con una imagen 3D del patio de los Arrayanes y un lector de código QR. La idea es que estas dos características fuesen una sola, en
+la cámara de las gafas. Por otro lado, llevaremos el \textit{smartphone} en la mano para controlar el contenido mostrado en las gafas, y
+además, mostrará una maqueta de la Alhambra que nos servirá como mapa.
+
+Por defecto, la aplicación lanza el Main Activity, inicializando la aplicación y mostrando el ViewARFragment (nuestro visor VR). El
+visor muestra una imagen de 360º, en la cual, cuando estemos mirando una estructura en concreto (ya sea un edificio, puertas, columnas,
+jarrones, etc.), se nos marcará indicando que podremos interaccionar con ella. Si movemos ligeramente el móvil hacia abajo cuando una de
+ellas esté resaltada, iniciamos la InfoActivity, que es una pequeña página que muestra información extra sobre la estructura, como si fuese
+una enciclopedia. En nuestra aplicación esto puede suponer un problema, ya que el visor lo tenemos en el móvil y al realizar el movimiento
+podemos deseleccionar lo que teníamos resaltado; sin embargo, como esto estaría integrado en las gafas, cuando movamos el móvil, las gafas
+(que es donde vemos el objeto) no se verán afectadas.
+
+Una vez en el InfoActivity, para volver al visor VR, también realizaremos un movimiento horizontal con nuestro dispositivo. En nuestra
+aplicación, esto sale a partir del ViewARFragment, pero en sistema definitivo saldría a través de las gafas.
+
+En el menú desplegable, también tenemos la opción de Camera, que nos lleva al CameraFragment. Este implementa el lector de códigos QR, el
+cual nos servirá a la hora de entrar a un edificio. Habrá códigos QR en cada uno y se obtendrá un plano del edificio ya que las señales
+GPS pueden fallar o simplemente que el edificio tenga varias plantas y necesitemos ubicarnos mejor. Al igual que antes, para volver a la
+cámara, realizaremos un movimiento horizontal con nuestro dispositivo.
+
+
 % start new page before setting page layout,
 % otherwise previous page is also affected
 \KOMAoption{paper}{landscape}%
@@ -103,9 +135,11 @@
 % Poner estilo
 \pagestyle{lscape}
 
+\newpage
+
 \section{Diagrama de clases}
 
-A continuación se puede ver el diagrama de clases. No se han incluído atributos ni métodos porque se van a describir más adelante.
+A continuación se puede ver el diagrama de clases. No se han incluido atributos ni métodos porque se van a describir más adelante.
 
 \begin{figure}[H]
 \centering
