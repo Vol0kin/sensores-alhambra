@@ -17,9 +17,6 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 /**
  * Actividad principal
  * Se piden permisos y se lanza la actividad de comienzo deseada (en este caso ViewAR)
@@ -53,7 +50,7 @@ public class MainActivity extends AppCompatActivity{
         boolean hasPermisions = true;
 
         // Comprobar cada uno de los permisos
-        for (String permission: Arrays.asList(MainActivity.PERMISSIONS)) {
+        for (String permission: MainActivity.PERMISSIONS) {
             // Si alguno de ellos no se tiene, se pone la variable a false
             if (ContextCompat.checkSelfPermission(getApplicationContext(), permission)  != PackageManager.PERMISSION_GRANTED) {
                 hasPermisions = false;
