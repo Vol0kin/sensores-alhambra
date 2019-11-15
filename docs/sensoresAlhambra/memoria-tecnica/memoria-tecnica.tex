@@ -94,32 +94,66 @@
 \section{Introducción}
 En este proyecto vamos a explicar nuestra \textit{Natural User Interface (NUI)} que hará que nuestra visita a la Alhambra sea más
 dinámica y productiva. El proyecto constaría de varios dispositivos, como pueden ser principalmente unas gafas de realidad aumentada,
-un dispositivo Intel Real Sense y un micrófono integrados en las gafas, y un smartphone que utilizaremos tanto para manejar el sistema
-gracias a los múltiples sensores que incorporan, como controlador de la aplicación.
+un dispositivo \textit{Leap Motion} y un micrófono integrados en las gafas, y un \textit{smartphone} que utilizaremos tanto para
+manejar el sistema gracias a los múltiples sensores que incorpora como para controlar la aplicación.
 
-En esta primera versión del proyecto vamos a encargarnos de la interfaz por sensores, es decir, dejaremos a un lado el Intel Real Sense
+En esta primera versión del proyecto vamos a encargarnos de la interfaz por sensores, es decir, dejaremos a un lado el \textit{Leap Motion}
 y el controlador por voz. Vamos a encargarnos de la realidad aumentada y el resto de sensores para manejar el sistema.
 
+\section{Interfaz por sensores}
+
 Como no disponemos de unas gafas con estas características, simularemos su funcionamiento en la propia aplicación, utilizando un visor
-VR con una imagen 3D del patio de los Arrayanes y un lector de código QR. La idea es que estas dos características fuesen una sola, en
+VR con una imagen 3D del Patio de los Arrayanes y un lector de código QR. La idea es que estas dos características fuesen una sola, en
 la cámara de las gafas. Por otro lado, llevaremos el \textit{smartphone} en la mano para controlar el contenido mostrado en las gafas, y
 además, mostrará una maqueta de la Alhambra que nos servirá como mapa.
 
-Por defecto, la aplicación lanza el Main Activity, inicializando la aplicación y mostrando el ViewARFragment (nuestro visor VR). El
-visor muestra una imagen de 360º, en la cual, cuando estemos mirando una estructura en concreto (ya sea un edificio, puertas, columnas,
-jarrones, etc.), se nos marcará indicando que podremos interaccionar con ella. Si movemos ligeramente el móvil hacia abajo cuando una de
-ellas esté resaltada, iniciamos la InfoActivity, que es una pequeña página que muestra información extra sobre la estructura, como si fuese
-una enciclopedia. En nuestra aplicación esto puede suponer un problema, ya que el visor lo tenemos en el móvil y al realizar el movimiento
+\subsection{VR}
+\label{sec:vr}
+
+Por defecto, la aplicación lanza el \textbf{MainActivity} [\ref{sec:main}], inicializando la aplicación y mostrando el \textbf{ViewARFragment}
+(nuestro visor VR). El visor muestra una imagen de 360º, en la cual, cuando estemos mirando una estructura en concreto
+(ya sea un edificio, puertas, columnas, jarrones, etc.), se nos marcará indicando que podremos interaccionar con ella.
+Si movemos ligeramente el móvil hacia abajo cuando una de ellas esté resaltada, iniciamos la \textbf{InfoActivity},
+que es una pequeña página que muestra información extra sobre la estructura, como si fuese una enciclopedia. En nuestra
+aplicación esto puede suponer un problema, ya que el visor lo tenemos en el móvil y al realizar el movimiento
 podemos deseleccionar lo que teníamos resaltado; sin embargo, como esto estaría integrado en las gafas, cuando movamos el móvil, las gafas
 (que es donde vemos el objeto) no se verán afectadas.
 
-Una vez en el InfoActivity, para volver al visor VR, también realizaremos un movimiento horizontal con nuestro dispositivo. En nuestra
-aplicación, esto sale a partir del ViewARFragment, pero en sistema definitivo saldría a través de las gafas.
+Una vez en el \textbf{InfoActivity}, para volver al visor VR, realizaremos un movimiento horizontal con nuestro dispositivo.
+En nuestra aplicación, todo esto aparece en el dispositivo, pero en la versión definitiva, toda la información se mostraría en
+las gafas.
 
-En el menú desplegable, también tenemos la opción de Camera, que nos lleva al CameraFragment. Este implementa el lector de códigos QR, el
-cual nos servirá a la hora de entrar a un edificio. Habrá códigos QR en cada uno y se obtendrá un plano del edificio ya que las señales
-GPS pueden fallar o simplemente que el edificio tenga varias plantas y necesitemos ubicarnos mejor. Al igual que antes, para volver a la
-cámara, realizaremos un movimiento horizontal con nuestro dispositivo.
+\subsection{QR}
+
+En el menú desplegable, también tenemos la opción de \textit{Camera}, que nos lleva al \textbf{CameraFragment}. Este implementa el
+lector de códigos QR, el cuál nos servirá a la hora de entrar a un edificio. Habrá códigos QR en cada uno y se obtendrá un plano
+del edificio ya que las señales GPS pueden fallar o simplemente que el edificio tenga varias plantas y necesitemos ubicarnos mejor.
+Cuando leemos un código se nos iniciará un \textbf{BlueprintsActivity}, que muestra la información anterior. Al igual que antes,
+para volver a la cámara, realizaremos un movimiento horizontal con nuestro dispositivo.
+
+\subsection{Mapa}
+\label{sec:mapa}
+
+Por último, en el menú desplegable tenemos un apartado llamado \textit{Navigation}, el cual inicia el \textbf{NavigationFragment} que nos muestra un maquetado 3D
+de toda la Alhambra con regiones clickables señaladas para saber en que lugar nos encontramos o si queremos ir a algún otro lugar. Esta parte
+será la única que se vea en el smartphone. Tendremos implementados en él, el siguiente multitouch:
+
+\begin{itemize}
+    \item \textbf{Click simple}. Servirá para seleccionar y deseleccionar las regiones clickables.
+    \item \textbf{Click simple arrastable}. Nos permite desplazarnos por el mapa.
+    \item \textbf{Doble click}. Hacemos zoom en el mapa un valor predeterminado.
+    \item \textbf{Pellizcar}. Ampliamos y alejamos la zona del mapa, dependiendo de hacia donde pellizquemos.
+    \item \textbf{Click con dos dedos y arrastre}. Entramos en el modo 3D del mapa. En él nos desplazaremos como acabamos de ver.
+    \item \textbf{Click con dos dedos y rotación}. Estando en el modo 3D, esto nos servirá para rotar la vista alrededor de la maqueta.
+\end{itemize}
+
+Como podemos ver, utilizamos bastantes sensores multitouch, pero no hay ninguno que requiera del acelerómetro, giroscopio..., por lo que no tendremos
+colisiones entre éste y los mencionados anteriormente.
+
+\section{E X I T}
+LA P*** MEJOR IMPLEMENTACION DE LA HISTORIA. EL MEJOR BOTON QUE NOS PERMITIRA SALIR DE LA MARAVILLOSA APPPPP
+10/10 FULL 1 LINK MEGA ****SALE BIEEEN*** NO HAY FALLOS
+BRUTALISMO
 
 
 % start new page before setting page layout,
@@ -180,29 +214,84 @@ A continuación se puede ver el diagrama de clases. No se han incluido atributos
 
 \section{Descripción de las clases}
 
-Una vez visto el diagrama de clases, vamos a proceder a comentar brevemente qué es lo que hace cada clase:
+Una vez visto el diagrama de clases, vamos a proceder a comentar brevemente qué es lo que hace cada clase, sus
+atributos, y sus métodos.
 
-\begin{itemize}
-	\item \textbf{MainActivity}: Es la actividad principal, encargada de construir la barra de actividades que permite acceder
-	a los \textit{fragments} y de solicitar los permisos de cámara y localización necesarios para ejecutar la aplicación.
-	\item \textbf{ExitFragment}: \textit{Fragment} que permite salir de la aplicación.
-	\item \textbf{CameraFragment}: \textit{Fragment} que permite acceder al sensor de la cámara para poder realizar la lectura
-	de códigos QR. Se encarga de leerlos y pasarlos a \textbf{BlueprintActivity} para que éste los procese. Para la detección y
-	lectura de los códigos QR se utiliza la biblioteca \textit{BarcodeDetector}.
-	\item \textbf{NavigationFragment}: \textit{Fragment} que permite acceder a un mapa de la Alhambra y navegar por él, destacando
-	algunos de los edificios y permitiendo interactuar con ellos. Se utiliza la API de GoogleMaps para trabajar con mapas.
-	\item \textbf{ViewARFragment}: \textit{Fragment} que simula la visión en realidad aumentada del interior de los Palacios
-	Nazaríes. Simula que detecta zonas interesantes y las destaca. Cuando se realiza un gesto de \textit{shake} con el móvil,
-	muestra más información sobre el elemento destacado, utilizando para ello la clase \textbf{InfoActivity}.
-	\item \textbf{BlueprintsActivity}: Actividad que se encarga de recibir las lecturas QR de \textbf{CameraFragment} y de
-	procesarlas, mostrando la información correspondiente a la lectura.
-	\item \textbf{InfoActivity}: Clase que muestra información sobre la zona que ha sido destacada en \textbf{ViewARFragment}.
-	Procesa la información que tiene ésta y muestra una u otra información.
-\end{itemize}
+\subsection{\textbf{MainActivity}}
+\label{sec:main}
 
-\section{Atributos de las clases}
+Es la actividad principal, encargada de construir la barra de actividades que permite acceder
+a los \textit{fragments} y de solicitar los permisos de cámara y localización necesarios para ejecutar
+la aplicación.
 
-\section{Métodos de las clases}
+\subsubsection{Atributos}
+
+\subsubsection{Métodos}
+
+
+\subsection{\textbf{ExitFragment}}
+\label{sec:exit}
+
+\textit{Fragment} que pregunta al usuario si quiere salir o no de la aplicación y, en caso afirmativo, la cierra.
+
+\subsubsection{Atributos}
+
+\subsubsection{Métodos}
+
+\subsection{\textbf{CameraFragment}}
+\label{sec:camera}
+
+\textit{Fragment} que permite acceder al sensor de la cámara para poder realizar la lectura
+de códigos QR. Una vez leídos, se encarga también de pasarlos a \textbf{BlueprintActivity} para que éste los procese.
+Para la detección y lectura de los códigos QR se utiliza la biblioteca \textit{BarcodeDetector}.
+
+\subsubsection{Atributos}
+
+\subsubsection{Métodos}
+
+\subsection{\textbf{NavigationFragment}}
+\label{sec:nav}
+
+\textit{Fragment} que permite acceder a un mapa de la Alhambra y navegar por él, destacando
+algunos de los edificios y permitiendo interactuar con ellos, tal y como se ha descrito en la sección \ref{sec:mapa}.
+Para poder trabajar con mapas, se utiliza la API de GoogleMaps.
+
+\subsubsection{Atributos}
+
+\subsubsection{Métodos}
+
+\subsection{\textbf{ViewARFragment}}
+\label{sec:view}
+
+\textit{Fragment} que simula la visión en realidad aumentada del interior de los Palacios
+Nazaríes. Simula que detecta zonas interesantes y las destaca. Cuando se realiza un gesto con el dispositivo, tal y como se
+ha indicado en la sección \ref{sec:vr}, muestra más información sobre el elemento destacado, utilizando para ello la clase
+\textbf{InfoActivity}.
+
+\subsubsection{Atributos}
+
+\subsubsection{Métodos}
+
+\subsection{\textbf{BluePrintsActivity}}
+\label{sec:blue}
+
+Actividad que se encarga de recibir las lecturas QR de \textbf{CameraFragment} y de procesarlas, mostrando la información
+correspondiente a la lectura.
+
+\subsubsection{Atributos}
+
+\subsubsection{Métodos}
+
+\subsection{\textbf{InfoActivity}}
+\label{sec:info}
+
+Actividad que muestra información sobre la zona que ha sido destacada en \textbf{ViewARFragment}.
+Procesa la información que tiene ésta y muestra una u otra información.
+
+\subsubsection{Atributos}
+\subsubsection{Métodos}
+
+
 
 \newpage
 
