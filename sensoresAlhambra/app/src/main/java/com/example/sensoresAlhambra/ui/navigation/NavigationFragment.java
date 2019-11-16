@@ -53,7 +53,7 @@ import static com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_VIOL
 public class NavigationFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     /**
-     * API del cliente de Google
+     * Cliente de la API de Google
      */
     private GoogleApiClient googleApiClient;
 
@@ -68,13 +68,13 @@ public class NavigationFragment extends Fragment implements OnMapReadyCallback, 
     private static final long MIN_TIEMPO_ENTRE_UPDATES = 1000 * 5;
 
     /**
-     * Mapa de Google que se mostrará y sobre el que se crearán las zonas
-     * destacadas y la posición del dispositivo
+     * Mapa de Google que se mostrará sobre el que se crearán las zonas
+     * destacadas y se mostrará la posición del dispositivo
      */
     private GoogleMap nMap;
 
     /**
-     * Vista que se mostrará al pulsar sobre una zona destacada
+     * Imagen que se mostrará al pulsar sobre una zona destacada
      */
     private ImageView image;
 

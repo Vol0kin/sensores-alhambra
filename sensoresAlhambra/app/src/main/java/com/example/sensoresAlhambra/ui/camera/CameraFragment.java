@@ -32,12 +32,12 @@ import java.io.IOException;
  */
 public class CameraFragment extends Fragment {
     /**
-     * Superficie que se pondrá sobre la vista
+     * Superficie donde se mostrará la cámara
      */
     SurfaceView surfaceView;
 
     /**
-     * Source de la cámara
+     * Recibir información de la cámara
      */
     CameraSource cameraSource;
 
@@ -71,12 +71,11 @@ public class CameraFragment extends Fragment {
     }
 
     /**
-     * Método llamado cuando se pausa la actividad. Activa el lector de la cámara
+     * Método llamado cuando se pausa la actividad
      */
     @Override
     public void onPause() {
         super.onPause();
-        activateCameraReader();
     }
 
     /**
@@ -99,9 +98,9 @@ public class CameraFragment extends Fragment {
 
     /**
      * Activamos el lector de QR en cámara
-     * Simula reconozimiento de objetos en tiempo real
+     * Simula reconocimiento de objetos en tiempo real
      */
-    public void activateCameraReader(){
+    public void activateCameraReader() {
         // Establecer detector de QR
         barcodeDetector = new BarcodeDetector.Builder(getContext())
                 .setBarcodeFormats(Barcode.QR_CODE).build();
@@ -110,7 +109,7 @@ public class CameraFragment extends Fragment {
         cameraSource = new CameraSource.Builder(getContext(), barcodeDetector)
                 .setAutoFocusEnabled(true).build();
 
-        // EStablecer superficie
+        // Establecer superficie
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
@@ -165,7 +164,7 @@ public class CameraFragment extends Fragment {
                             vibrator.vibrate(50);
 
                             // Parar lectura de códigos
-                            cameraSource.stop(); // ADD THIS. THIS WILL STOP CAMERA
+                            cameraSource.stop();
 
                             // Obtener valor leído
                             lecturaQr = qrCodes.valueAt(0).displayValue;

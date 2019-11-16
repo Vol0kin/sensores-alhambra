@@ -46,12 +46,12 @@ public class ViewARFragment extends Fragment implements SensorEventListener{
     private float[] mHeadRotation = new float[2];
 
     /**
-     * Último momento en el que se ha actualizado el sensor
+     * Último instante en el que se ha actualizado el sensor
      */
     private long lastUpdate = 0;
 
     /**
-     * Último valor de Y registrado
+     * Último valor de Y registrado con el acelerómetro
      */
     private float last_y;
 
@@ -82,7 +82,7 @@ public class ViewARFragment extends Fragment implements SensorEventListener{
         sensorManager = (SensorManager)getActivity().getSystemService(Context.SENSOR_SERVICE);
 
         // Cargamos la foto inicial
-        loadPhotoSphere(imagen);
+        loadPhotoSphere();
 
         // Creamos un listener
         mVRPanoramaView.setEventListener(new VrPanoramaEventListener ());
@@ -124,16 +124,15 @@ public class ViewARFragment extends Fragment implements SensorEventListener{
 
 
     /**
-     * Carga la foto en el manager
-     * @param foto
+     * Carga la imagen en el manager
      */
-    private void loadPhotoSphere(String foto) {
+    private void loadPhotoSphere() {
         VrPanoramaView.Options options = new VrPanoramaView.Options();
         InputStream inputStream = null;
         AssetManager assetManager = this.getContext().getAssets();
 
         try {
-            inputStream = assetManager.open(foto);
+            inputStream = assetManager.open(imagen);
             options.inputType = VrPanoramaView.Options.TYPE_MONO;
             mVRPanoramaView.loadImageFromBitmap(BitmapFactory.decodeStream(inputStream), options);
             inputStream.close();
@@ -188,26 +187,26 @@ public class ViewARFragment extends Fragment implements SensorEventListener{
 
     /**
      * Comprobamos la rotación en los diferentes ejes.
-     * Dependiendo de los valores, comprovamos que imagen está cargada y,
+     * Dependiendo de los valores, comprobamos que imagen está cargada y,
      * si se necesita, cargamos una nueva
      */
     private void updateReticule() {
         if(mHeadRotation[1] > -60 && mHeadRotation[1] < -20 && mHeadRotation[0] > -20 && mHeadRotation[0] < 20){
             if (!imagen.equals("image2.jpg")) {
                 imagen = "image2.jpg";
-                loadPhotoSphere(imagen);
+                loadPhotoSphere();
             }
         }
         else if(mHeadRotation[1] > 0 && mHeadRotation[1] < 30 && mHeadRotation[0] > -20 && mHeadRotation[0] < 20){
             if (!imagen.equals("image3.jpg")) {
                 imagen = "image3.jpg";
-                loadPhotoSphere(imagen);
+                loadPhotoSphere();
             }
         }
         else{
             if (!imagen.equals("image.jpg")) {
                 imagen = "image.jpg";
-                loadPhotoSphere(imagen);
+                loadPhotoSphere();
             }
         }
     }

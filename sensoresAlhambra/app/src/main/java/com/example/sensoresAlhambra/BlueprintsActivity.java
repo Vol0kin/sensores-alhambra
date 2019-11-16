@@ -201,7 +201,6 @@ public class BlueprintsActivity extends AppCompatActivity implements SensorEvent
      */
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        System.out.print("cambia precisión");
         // En caso de que la precisión cambie
     }
 }
