@@ -1,2 +1,4 @@
-# ugr-npi
-Prácticas de la asignatura Nuevos Paradigmas de Interacción, impartida en el Grado en Ingeniería Informática en la Universidad de Granada durante el curso académico 2019-2020.
+# sensores-alhambra
+
+Práctica de sensores de la asignatura Nuevos Paradigmas de Interacción, impartida en la
+Universidad de Granada durante el año académico 2019-20.
